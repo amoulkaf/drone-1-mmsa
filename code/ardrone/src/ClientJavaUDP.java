@@ -29,7 +29,7 @@ public class ClientJavaUDP extends Thread{
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-      DatagramSocket socket = null;
+    DatagramSocket socket = null;
 	try {
 		socket = new DatagramSocket();
 	} catch (SocketException e) {
@@ -103,8 +103,11 @@ public class ClientJavaUDP extends Thread{
 	  return "AT*PCMD="+ ++_seq + ",1,0,-1085485875,0,0\r";
   }
   
+  public String move(String roll, String pitch, String throttle, String yaw){
+	  return "AT*PCMD=" + ++_seq + ",1," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
+  }
   
-  public String calibre(){
+  public String calibrate(){
 	  return "AT*CALIB=" + ++_seq + "," + ID +_eof;
   }
   
@@ -139,7 +142,7 @@ public class ClientJavaUDP extends Thread{
 	  ClientJavaUDP localhost = new ClientJavaUDP("localhost", 7000, "\n", "localhost");
 	  
 	  ardrone.start();
-	  //localhost.start();
+	  localhost.start();
   }
   
 }
