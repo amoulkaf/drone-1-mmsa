@@ -3,7 +3,6 @@ import java.net.*;
 
 
 public class ClientJavaUDP extends Thread{
-  //private byte _buffer[] = new byte[1024];
   private String _addr;
   private String _message;
   private int _port;
@@ -36,24 +35,37 @@ public class ClientJavaUDP extends Thread{
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
-      
-      for (int i=0; i < 36; i++) {
+      //Phase de tests
+	  //en chantier !!!
+      for (int i=0; i < 25; i++) {
     	  if (i == 0) 
     		  setMessage(check());
     	  else if(i == 1) 
     		  setMessage(takeOff());
     	  else if(i == 2) {
-    		  setMessage(hover());
-    		  try {
-				Thread.sleep(5000);
+    		setMessage(hover());
+    		try {
+				Thread.sleep(6000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	  }
-    	  else if (i == 35){
+    	  else if(i == 3) {
+    		  setMessage(calibrate());
+    	  }
+    	  else if(i == 4){
     		  try {
-				Thread.sleep(8000);
+  				Thread.sleep(8000);
+  				} 
+    		  catch (InterruptedException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			}
+    	  }
+    	  else if (i == 24){
+    		  try {
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -62,7 +74,13 @@ public class ClientJavaUDP extends Thread{
     		  setMessage(landing());
     	  }
     	  else {
-      		setMessage(move(0,0,0,convert754(0.8)));  
+      		setMessage(move(0,convert754(-0.2),0,0));  
+      		try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	  }
     	  
           byte buffer[] = _message.getBytes();
@@ -79,14 +97,14 @@ public class ClientJavaUDP extends Thread{
       socket.close();
   }
 
-  //arrete les mouvements du drone
+  //fait planer le drone
   public String hover(){
 	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0" + _eof;
   }
   
-  //fait bouger le drone suivant les angles Roll, Pitch, Throttle et Yaw
+  //fait bouger le drone suivant les angles Roll(L/R), Pitch(F/B), Throttle(Gaz) et Yaw(Angle)
   public String move(int roll, int pitch, int throttle, int yaw){
-	  return "AT*PCMD=" + ++_seq + ",1," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
+	  return "AT*PCMD=" + ++_seq + "," + ID + "," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
   }
   
   public String calibrate(){
