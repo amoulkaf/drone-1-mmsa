@@ -45,7 +45,7 @@ public class ClientJavaUDP extends Thread{
     	  else if(i == 2) {
     		  setMessage(hover());
     		  try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -53,13 +53,12 @@ public class ClientJavaUDP extends Thread{
     	  }
     	  else if(i ==3) {
     		setMessage(move(0,0,0,convert754(0.8)));  
-    		break;
     		  
     	  }
     	  else if(i == 4) {
     		  setMessage(hover());
     		  try {
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,7 +92,7 @@ public class ClientJavaUDP extends Thread{
 
   //arrete les mouvements du drone
   public String hover(){
-	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0\r";
+	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0" + _eof;
   }
   
   //fait bouger le drone suivant les angles Roll, Pitch, Throttle et Yaw
