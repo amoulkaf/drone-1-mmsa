@@ -45,21 +45,21 @@ public class ClientJavaUDP extends Thread{
     	  else if(i == 2) {
     		  setMessage(hover());
     		  try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	  }
     	  else if(i ==3) {
-    		setMessage(test2());  
+    		setMessage(move(0,0,0,convert754(0.8)));  
     		break;
     		  
     	  }
     	  else if(i == 4) {
     		  setMessage(hover());
     		  try {
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -90,22 +90,14 @@ public class ClientJavaUDP extends Thread{
     	   
       socket.close();
   }
-  
-  public String test2(){
-	  return "AT*PCMD="+ ++_seq + ",1,0,1061997773,-1085485875,0\r";
-  }  
-  
-  public String test3(){  
-	  return "AT*PCMD="+ ++_seq + ",1,0,-1085485875,0,0\r";
-  }
-  
+
   //arrete les mouvements du drone
   public String hover(){
 	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0\r";
   }
   
   //fait bouger le drone suivant les angles Roll, Pitch, Throttle et Yaw
-  public String move(String roll, String pitch, String throttle, String yaw){
+  public String move(int roll, int pitch, int throttle, int yaw){
 	  return "AT*PCMD=" + ++_seq + ",1," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
   }
   
@@ -139,8 +131,8 @@ public class ClientJavaUDP extends Thread{
   }
   
   //fonction qui permet de convertir un float en int selon la norme IEE754
-  public int convert754(Float x){
-	  return Float.floatToRawIntBits(x);
+  public static int convert754(double x){
+	  return Float.floatToRawIntBits((float)x);
   }
   
   public static void main (String[] args){
@@ -150,5 +142,4 @@ public class ClientJavaUDP extends Thread{
 	  ardrone.start();
 	  localhost.start();
   }
-  
 }
