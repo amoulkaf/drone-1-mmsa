@@ -22,7 +22,7 @@ public class ClientJavaUDP extends Thread{
   }
   
   public void run() {
-	  InetAddress server = null;
+	InetAddress server = null;
 	try {
 		server = InetAddress.getByName(_addr);
 	} catch (UnknownHostException e) {
