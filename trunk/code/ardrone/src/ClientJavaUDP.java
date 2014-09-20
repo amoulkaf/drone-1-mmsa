@@ -43,7 +43,7 @@ public class ClientJavaUDP extends Thread{
     	  else if(i == 1) 
     		  setMessage(takeOff());
     	  else if(i == 2) {
-    		  setMessage(test());
+    		  setMessage(hover());
     		  try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
@@ -57,7 +57,7 @@ public class ClientJavaUDP extends Thread{
     		  
     	  }
     	  else if(i == 4) {
-    		  setMessage(test());
+    		  setMessage(hover());
     		  try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
@@ -91,10 +91,6 @@ public class ClientJavaUDP extends Thread{
       socket.close();
   }
   
-  public String test(){
-	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0\r";
-  }
-  
   public String test2(){
 	  return "AT*PCMD="+ ++_seq + ",1,0,1061997773,-1085485875,0\r";
   }  
@@ -103,6 +99,12 @@ public class ClientJavaUDP extends Thread{
 	  return "AT*PCMD="+ ++_seq + ",1,0,-1085485875,0,0\r";
   }
   
+  //arrete les mouvements du drone
+  public String hover(){
+	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0\r";
+  }
+  
+  //fait bouger le drone suivant les angles Roll, Pitch, Throttle et Yaw
   public String move(String roll, String pitch, String throttle, String yaw){
 	  return "AT*PCMD=" + ++_seq + ",1," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
   }
@@ -111,31 +113,35 @@ public class ClientJavaUDP extends Thread{
 	  return "AT*CALIB=" + ++_seq + "," + ID +_eof;
   }
   
+  //calibrage horizontal : verifie que le drone soit sur un support stable
   public String check(){
 	  return "AT*FTRIM=" + ++_seq + _eof;
   }
   
+  //fait decoller le drone
   public  String takeOff(){
 	  return "AT*REF=" + ++_seq + "," + TAKEOFF + _eof;
   }
   
+  //pose le drone
   public  String landing(){
 	  return "AT*REF=" + ++_seq + "," + LANDING + _eof;
   }
   
+  //coupe les moteurs du drone (en cas d'urgence uniquement)
   public  String emergencyMotorsCut(){
 	  return "AT*REF="+ ++_seq + "," + EMERGENCYMOTORSCUT + _eof;
   }
   
+  //message (ordre) qui sera envoye au drone
   public  void setMessage(String m){
 	  _message = m;
   }
   
+  //fonction qui permet de convertir un float en int selon la norme IEE754
   public int convert754(Float x){
 	  return Float.floatToRawIntBits(x);
   }
-  
-  
   
   public static void main (String[] args){
 	  ClientJavaUDP ardrone = new ClientJavaUDP("192.168.1.1", 5556, "\r", "AR-Drone");
