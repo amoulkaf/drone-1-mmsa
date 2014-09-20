@@ -37,7 +37,7 @@ public class ClientJavaUDP extends Thread{
 		e.printStackTrace();
 	} 
       
-      for (int i=0; i < 6; i++) {
+      for (int i=0; i < 36; i++) {
     	  if (i == 0) 
     		  setMessage(check());
     	  else if(i == 1) 
@@ -45,35 +45,24 @@ public class ClientJavaUDP extends Thread{
     	  else if(i == 2) {
     		  setMessage(hover());
     		  try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	  }
-    	  else if(i ==3) {
-    		setMessage(move(0,0,0,convert754(0.8)));  
-    		  
-    	  }
-    	  else if(i == 4) {
-    		  setMessage(hover());
+    	  else if (i == 35){
     		  try {
-				Thread.sleep(10000);
+				Thread.sleep(8000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}  
+			}
+			
+    		  setMessage(landing());
     	  }
     	  else {
-    		  /*
-    		  try {
-				//Thread.sleep(15000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-    		  setMessage(landing());
+      		setMessage(move(0,0,0,convert754(0.8)));  
     	  }
     	  
           byte buffer[] = _message.getBytes();
