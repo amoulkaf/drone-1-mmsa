@@ -92,6 +92,7 @@ public class Drone extends Thread{
       socket.close();
   }
 
+  //initialise le serveur
   public InetAddress initServer(){
 	  InetAddress server = null;
 	  try {
@@ -105,6 +106,7 @@ public class Drone extends Thread{
 	  return server;
   }
 
+  //initialise le socket 
   public DatagramSocket initSocket() {
 	  DatagramSocket socket = null;
 	  try {
@@ -130,6 +132,16 @@ public class Drone extends Thread{
       System.out.println("Message sent with num seq : " + _seq);
   }
   
+  //calibre le drone, une fois stabilise
+  public String calibrate(){
+	  return "AT*CALIB=" + ++_seq + "," + ID +_eof;
+  }
+  
+  //calibrage horizontal : verifie que le drone soit sur un support stable
+  public String check(){
+	  return "AT*FTRIM=" + ++_seq + _eof;
+  }
+  
   //fait planer le drone
   public String hover(){
 	  return "AT*PCMD="+ ++_seq + ",0,0,0,0,0" + _eof;
@@ -139,15 +151,7 @@ public class Drone extends Thread{
   public String move(int roll, int pitch, int throttle, int yaw){
 	  return "AT*PCMD=" + ++_seq + "," + ID + "," + roll + "," + pitch + "," + throttle + "," + yaw + _eof;
   }
-  
-  public String calibrate(){
-	  return "AT*CALIB=" + ++_seq + "," + ID +_eof;
-  }
-  
-  //calibrage horizontal : verifie que le drone soit sur un support stable
-  public String check(){
-	  return "AT*FTRIM=" + ++_seq + _eof;
-  }
+ 
   
   //fait decoller le drone
   public String takeOff(){
@@ -164,21 +168,23 @@ public class Drone extends Thread{
 	  return "AT*REF="+ ++_seq + "," + EMERGENCYMOTORSCUT + _eof;
   }
   
+  //commande qui permet de configurer le drone selon la key et sa valeur
+  public String config(String key, String value){
+	  return "AT*CONFIG=" + ++_seq + ",\"" + key + "\",\"" + value + "\"" + _eof;
+  }
+  //commande a envoyer avant chaque nouvelle config
   public String configIDS(){
 	  return "AT*CONFIG=" + ++_seq + ",\"" + Convert.convertCRC32(SESSION) + "\",\""
 			  							 + Convert.convertCRC32(PROFILE) + "\",\""
 			  							 + Convert.convertCRC32(APPLI) + "\"" + _eof;
   }
-  
-  public String config(String key, String value){
-	  return "AT*CONFIG=" + ++_seq + ",\"" + key + "\",\"" + value + "\"" + _eof;
-  }
-  
+
   //message (ordre) qui sera envoye au drone
   public void setMessage(String m){
 	  _message = m;
   }
   
+  //sequence d'initialisation a executer avant tout autre commande a envoyer
   public void initialize(DatagramSocket socket,InetAddress server) throws InterruptedException{
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
@@ -216,7 +222,6 @@ public class Drone extends Thread{
 	  sendMessage(socket, server);
 	  Thread.sleep(200);
   }
-  
   
   
   public static void main (String[] args){
