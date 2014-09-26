@@ -76,7 +76,7 @@ public class Drone extends Thread{
 		  setMessage(landing());
 		}
 		else {
-			setMessage(move(0,convert754(-0.2),0,0));  
+			setMessage(move(0,Convert.convert754(-0.2),0,0));  
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
@@ -165,9 +165,9 @@ public class Drone extends Thread{
   }
   
   public String configIDS(){
-	  return "AT*CONFIG=" + ++_seq + ",\"" + convertCRC32(SESSION) + "\",\""
-			  							 + convertCRC32(PROFILE) + "\",\""
-			  							 + convertCRC32(APPLI) + "\"" + _eof;
+	  return "AT*CONFIG=" + ++_seq + ",\"" + Convert.convertCRC32(SESSION) + "\",\""
+			  							 + Convert.convertCRC32(PROFILE) + "\",\""
+			  							 + Convert.convertCRC32(APPLI) + "\"" + _eof;
   }
   
   public String config(String key, String value){
@@ -182,19 +182,19 @@ public class Drone extends Thread{
   public void initialize(DatagramSocket socket,InetAddress server) throws InterruptedException{
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:session_id", convertCRC32(SESSION)));
+	  setMessage(config("custom:session_id", Convert.convertCRC32(SESSION)));
 	  sendMessage(socket, server);
 	  Thread.sleep(200);
 	      
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:application_id", convertCRC32(APPLI)));
+	  setMessage(config("custom:application_id", Convert.convertCRC32(APPLI)));
 	  sendMessage(socket, server);
 	  Thread.sleep(200);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:profile_id", convertCRC32(PROFILE)));
+	  setMessage(config("custom:profile_id", Convert.convertCRC32(PROFILE)));
 	  sendMessage(socket, server);
 	  Thread.sleep(200);
 	  	  
@@ -217,20 +217,7 @@ public class Drone extends Thread{
 	  Thread.sleep(200);
   }
   
-  //fonction qui permet de convertir un float en int selon la norme IEE754
-  public static int convert754(double x){
-	  return Float.floatToRawIntBits((float)x);
-  }
   
-  //fonction qui ,permet de convertir un string ASCII en string CRC32
-  public static String convertCRC32(String str){
-	  	byte bytes[] = str.getBytes();
-		Checksum checksum = new CRC32();
-		checksum.update(bytes,0,bytes.length);
-		long lngChecksum = checksum.getValue();
-		String ret = Long.toHexString(lngChecksum);
-		return ret;
-  }
   
   public static void main (String[] args){
 	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
