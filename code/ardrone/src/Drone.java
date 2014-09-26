@@ -18,6 +18,11 @@ public class Drone extends Thread{
   private final static String SESSION = "LaSessionCool";
   private final static String PROFILE = "LeProfilDeBG";
   private final static String APPLI = "LAppliDeOuf";
+  private final static String KEYVIDEOCHANNEL = "video:video_channel";
+  private final static String VALUEVIDEOCHANNELFRONT = "0";
+  private final static String VALUEVIDEOCHANNELVERTICAL = "1";
+  private final static String KEYVIDEOCODEC = "video:video_codec";
+  private final static String VALUEVIDEOCODEC129 ="129";
   
   public Drone(String addr, int port, String eof, String name){
 	  super(name);
@@ -39,7 +44,8 @@ public class Drone extends Thread{
 	catch (InterruptedException e1) {
 		e1.printStackTrace();
 	}	
-	for (int i=0; i < 25; i++) {
+	/*
+	  for (int i=0; i < 25; i++) {
 		if (i == 0) 
 			setMessage(check());
 		else if(i == 1) 
@@ -86,8 +92,48 @@ public class Drone extends Thread{
 		}
 		  
 	      sendMessage(socket, server); 
+		  }
 	  }
-    	   
+  */
+	
+	  // TEST DE LA VIDEO FRONT & VERTICAL
+	  try {
+		initialize(socket, server);
+	} catch (InterruptedException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+	  try {
+		Thread.sleep(1000);
+	} catch (InterruptedException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+	  setMessage(config(KEYVIDEOCODEC,VALUEVIDEOCODEC129));
+	  sendMessage(socket,server);
+	  try {
+		Thread.sleep(1000);
+	} catch (InterruptedException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	  for(int i = 0 ; i < 1000 ; i++){
+		  
+		  if(i % 2 == 0){
+			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELFRONT));
+		  }
+		  else{
+			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELVERTICAL));
+		  }
+		  sendMessage(socket,server);
+		  try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	  }
+	  
       System.out.println("----End of program----");
       socket.close();
   }
@@ -228,7 +274,7 @@ public class Drone extends Thread{
 	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
 	  Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
 	  
-	 // ardrone.start();
+	  ardrone.start();
 	  localhost.start();
   }
 }
