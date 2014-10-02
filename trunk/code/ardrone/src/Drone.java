@@ -97,20 +97,12 @@ public class Drone extends Thread{
   */
 	
 	  // TEST DE LA VIDEO FRONT & VERTICAL
-	  try {
-		initialize(socket, server);
-	} catch (InterruptedException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	}
-	  try {
-		Thread.sleep(1000);
-	} catch (InterruptedException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	}
+	
+	  setMessage(configIDS());
+	  sendMessage(socket,server);
 	  setMessage(config(KEYVIDEOCODEC,VALUEVIDEOCODEC129));
 	  sendMessage(socket,server);
+	  
 	  try {
 		Thread.sleep(1000);
 	} catch (InterruptedException e1) {
@@ -118,12 +110,14 @@ public class Drone extends Thread{
 		e1.printStackTrace();
 	}
 	  for(int i = 0 ; i < 1000 ; i++){
+		  setMessage(configIDS());
+		  sendMessage(socket,server);
 		  
 		  if(i % 2 == 0){
-			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELFRONT));
+			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELVERTICAL));
 		  }
 		  else{
-			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELVERTICAL));
+			  setMessage(config(KEYVIDEOCHANNEL,VALUEVIDEOCHANNELFRONT));
 		  }
 		  sendMessage(socket,server);
 		  try {
@@ -218,9 +212,10 @@ public class Drone extends Thread{
   public String config(String key, String value){
 	  return "AT*CONFIG=" + ++_seq + ",\"" + key + "\",\"" + value + "\"" + _eof;
   }
+  
   //commande a envoyer avant chaque nouvelle config
   public String configIDS(){
-	  return "AT*CONFIG=" + ++_seq + ",\"" + Convert.convertCRC32(SESSION) + "\",\""
+	  return "AT*CONFIG_IDS=" + ++_seq + ",\"" + Convert.convertCRC32(SESSION) + "\",\""
 			  							 + Convert.convertCRC32(PROFILE) + "\",\""
 			  							 + Convert.convertCRC32(APPLI) + "\"" + _eof;
   }
@@ -271,7 +266,7 @@ public class Drone extends Thread{
   
   
   public static void main (String[] args){
-	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
+	  Drone ardrone = new Drone("192.168.1.1", 5555, "\r", "AR-Drone");
 	  Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
 	  
 	  ardrone.start();
