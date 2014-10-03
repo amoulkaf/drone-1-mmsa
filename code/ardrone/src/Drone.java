@@ -1,8 +1,5 @@
 import java.io.*; 
 import java.net.*;
-import java.util.zip.Checksum;
-import java.util.zip.CRC32;
-
 
 public class Drone extends Thread{
   private String _addr;
@@ -15,9 +12,9 @@ public class Drone extends Thread{
   private final static String EMERGENCYMOTORSCUT = "290717952";
   private final static String TAKEOFF = "290718208";
   private final static String ID = "1";
-  private final static String SESSION = "LaSessionCool";
-  private final static String PROFILE = "LeProfilDeBG";
-  private final static String APPLI = "LAppliDeOuf";
+  private final static String SESSION = "ses";
+  private final static String PROFILE = "pro";
+  private final static String APPLI = "app";
   private final static String KEYVIDEOCHANNEL = "video:video_channel";
   private final static String VALUEVIDEOCHANNELFRONT = "0";
   private final static String VALUEVIDEOCHANNELVERTICAL = "1";
@@ -35,6 +32,7 @@ public class Drone extends Thread{
 	InetAddress server = initServer();
 	
 	DatagramSocket socket = initSocket();
+
 	
 	//Phase de tests
 	//en chantier !!!
@@ -43,7 +41,8 @@ public class Drone extends Thread{
 	} 
 	catch (InterruptedException e1) {
 		e1.printStackTrace();
-	}	
+	}
+	
 	/*
 	  for (int i=0; i < 25; i++) {
 		if (i == 0) 
@@ -215,86 +214,91 @@ public class Drone extends Thread{
   
   //commande a envoyer avant chaque nouvelle config
   public String configIDS(){
-	  return "AT*CONFIG_IDS=" + ++_seq + ",\"" + Convert.convertCRC32(SESSION) + "\",\""
-			  							 + Convert.convertCRC32(PROFILE) + "\",\""
-			  							 + Convert.convertCRC32(APPLI) + "\"" + _eof;
+	  return "AT*CONFIG_IDS=" + ++_seq + ",\"7870b07f\",\"6bb4d6ff\",\"c96e70cf\"" + _eof;
   }
 
   //message (ordre) qui sera envoye au drone
   public void setMessage(String m){
 	  _message = m;
+	  System.out.println(m);
   }
   
   //sequence d'initialisation a executer avant tout autre commande a envoyer
   public void initialize(DatagramSocket socket,InetAddress server) throws InterruptedException{
 	  
-	  setMessage("AT*LED="+_seq+",5,"+Convert.convert754(0.8)+"15");
+	  setMessage("AT*LED="+ ++_seq+",5,"+Convert.convert754(0.8)+",8"+_eof);
 	  sendMessage(socket, server);
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:session_id", "-all"));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
+	  
+	  setMessage("AT*LED="+ ++_seq+",10,"+Convert.convert754(0.8)+",8"+_eof);
+	  sendMessage(socket, server);
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:profile_id", "-" + Convert.convertCRC32(PROFILE)));
+	  setMessage(config("custom:profile_id", "-"+Convert.convertCRC32(PROFILE)));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
 	  
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:application_id", "-" + Convert.convertCRC32(APPLI)));
+	  setMessage(config("custom:application_id", "-"+Convert.convertCRC32(APPLI)));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
-	  	  
-
+	  Thread.sleep(500);
 	  
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:session_id", Convert.convertCRC32(SESSION)));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
 	      
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
-	  setMessage(config("custom:application_id", Convert.convertCRC32(APPLI)));
+	  setMessage(config("custom:application_id",Convert.convertCRC32(APPLI)));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:profile_id", Convert.convertCRC32(PROFILE)));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
-	  	  
+	  Thread.sleep(500);
+	  
+	 
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:application_desc", APPLI));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:profile_desc", PROFILE));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:session_desc", SESSION));
 	  sendMessage(socket, server);
-	  Thread.sleep(300);
+	  Thread.sleep(500);
   }
   
   
   public static void main (String[] args){
 	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
 	  Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
-	  
+	  /*
+	  System.out.println("-------------Appli:"+Convert.convertCRC32("app")+"----------");
+	  System.out.println("-------------Session:"+Convert.convertCRC32("ses")+"----------");
+	  System.out.println("-------------Profile:"+Convert.convertCRC32("pro")+"----------");
+*/
 	  ardrone.start();
 	  localhost.start();
   }
