@@ -227,46 +227,72 @@ public class Drone extends Thread{
   
   //sequence d'initialisation a executer avant tout autre commande a envoyer
   public void initialize(DatagramSocket socket,InetAddress server) throws InterruptedException{
+	  
+	  setMessage("AT*LED="+_seq+",5,"+Convert.convert754(0.8)+"15");
+	  sendMessage(socket, server);
+	  
+	  setMessage(configIDS());
+	  sendMessage(socket, server);
+	  setMessage(config("custom:session_id", "-all"));
+	  sendMessage(socket, server);
+	  Thread.sleep(300);
+	  
+	  setMessage(configIDS());
+	  sendMessage(socket, server);
+	  setMessage(config("custom:profile_id", "-" + Convert.convertCRC32(PROFILE)));
+	  sendMessage(socket, server);
+	  Thread.sleep(300);
+	  
+	  
+	  setMessage(configIDS());
+	  sendMessage(socket, server);
+	  setMessage(config("custom:application_id", "-" + Convert.convertCRC32(APPLI)));
+	  sendMessage(socket, server);
+	  Thread.sleep(300);
+	  	  
+
+	  
+	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:session_id", Convert.convertCRC32(SESSION)));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
 	      
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:application_id", Convert.convertCRC32(APPLI)));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:profile_id", Convert.convertCRC32(PROFILE)));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:application_desc", APPLI));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
 	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:profile_desc", PROFILE));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
 	  	  
 	  setMessage(configIDS());
 	  sendMessage(socket, server);
 	  setMessage(config("custom:session_desc", SESSION));
 	  sendMessage(socket, server);
-	  Thread.sleep(200);
+	  Thread.sleep(300);
   }
   
   
   public static void main (String[] args){
-	  Drone ardrone = new Drone("192.168.1.1", 5555, "\r", "AR-Drone");
+	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
 	  Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
 	  
 	  ardrone.start();
