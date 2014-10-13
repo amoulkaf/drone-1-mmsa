@@ -8,9 +8,10 @@ public final class Commands {
 	  private final static String EMERGENCYMOTORSCUT = "290717952";
 	  private final static String TAKEOFF = "290718208";
 	  private final static String ID = "1";
-	  private final static String SESSION = "ses";
-	  private final static String PROFILE = "pro";
-	  private final static String APPLI = "app";
+	  //GEOFFREY:13-10-14:mis en protected pour que les autres classes puissent y avoir acces
+	  protected final static String SESSION = "ses";
+	  protected final static String PROFILE = "pro";
+	  protected final static String APPLI = "app";
 	  private final static String KEYVIDEOCHANNEL = "video:video_channel";
 	  private final static String VALUEVIDEOCHANNELFRONT = "0";
 	  private final static String VALUEVIDEOCHANNELVERTICAL = "1";
