@@ -290,16 +290,4 @@ public class Drone extends Thread{
 	  Thread.sleep(500);
   }
   
-  
-  public static void main (String[] args){
-	  Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
-	  Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
-	  /*
-	  System.out.println("-------------Appli:"+Convert.convertCRC32("app")+"----------");
-	  System.out.println("-------------Session:"+Convert.convertCRC32("ses")+"----------");
-	  System.out.println("-------------Profile:"+Convert.convertCRC32("pro")+"----------");
-*/
-	  ardrone.start();
-	  localhost.start();
-  }
-}
+ }
