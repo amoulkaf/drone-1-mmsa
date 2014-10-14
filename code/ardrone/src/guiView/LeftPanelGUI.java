@@ -39,6 +39,9 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		
 		this.setLayout(new BorderLayout());
 		
+		// TODO
+		//	* recuperer le stream du ARDrone
+		
 		//<TEST>
 		try {
 			_camImgTmp =  ImageIO.read(new File("../../doc/IHM/ihm.png"));
