@@ -8,78 +8,60 @@ package PartieANOUARetANAS;
 import java.io.*;
 import java.net.*;
 
-public class Controller {
+public class Controller extends Thread {
+	private Connection _connection;
 	
-	public Controller(){
+	public Controller(String addr, int port, String eof){
+		_connection = new Connection(addr,port,eof);
+	}
+	
+	public void run(){
+		try {
+			initialize();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		_connection.sendMessage(Commands.check(_connection.getSeq(),_connection.getEof()));
 		
 	}
 	
-	public void init(){
-		
-	}
 	//sequence d'initialisation a executer avant tout autre commande a envoyer
-	  public void initialize(DatagramSocket socket,InetAddress server) throws InterruptedException{
-		  
-		  //GEOFFREY:j'ai rajouté Commands. mais il faut des arguments a la fonction configIDS
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  //GEOFFREY:il manque 2 arguments dans cette fonction...
-		  setMessage(Commands.config("custom:session_id", "-all"));
-		  sendMessage(socket, server);
+	  public void initialize() throws InterruptedException{
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:session_id", "-all", _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
 		  
-		  setMessage("AT*LED="+ ++_seq+",10,"+Convert.convert754(0.8)+",8"+_eof);
-		  sendMessage(socket, server);
-		  
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:profile_id", "-"+Convert.convertCRC32(Commands.PROFILE)));
-		  sendMessage(socket, server);
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:profile_id", "-"+Convert.convertCRC32(Commands.PROFILE), _connection.getSeq(), _connection.getEof()));;
 		  Thread.sleep(500);
 		  
-		  
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:application_id", "-"+Convert.convertCRC32(Commands.APPLI)));
-		  sendMessage(socket, server);
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:application_id", "-"+Convert.convertCRC32(Commands.APPLI), _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
 		  
-		  
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:session_id", Convert.convertCRC32(Commands.SESSION)));
-		  sendMessage(socket, server);
-		  Thread.sleep(500);
-		      
-		  setMessage(configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:application_id",Convert.convertCRC32(Commands.APPLI)));
-		  sendMessage(socket, server);
-		  Thread.sleep(500);
-		  	  
-		  setMessage(configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:profile_id", Convert.convertCRC32(Commands.PROFILE)));
-		  sendMessage(socket, server);
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:session_id", Convert.convertCRC32(Commands.SESSION), _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
 		  
-		 
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:application_desc", Commands.APPLI));
-		  sendMessage(socket, server);
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:application_id",Convert.convertCRC32(Commands.APPLI), _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
 		  
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:profile_desc", Commands.PROFILE));
-		  sendMessage(socket, server);
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:profile_id", Convert.convertCRC32(Commands.PROFILE), _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
-		  	  
-		  setMessage(Commands.configIDS());
-		  sendMessage(socket, server);
-		  setMessage(config("custom:session_desc", Commands.SESSION));
-		  sendMessage(socket, server);
+		  
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:application_desc", Commands.APPLI, _connection.getSeq(), _connection.getEof()));
+		  Thread.sleep(500);
+		  
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:profile_desc", Commands.PROFILE, _connection.getSeq(), _connection.getEof()));
+		  Thread.sleep(500);
+		  	
+		  _connection.sendMessage(Commands.configIDS(_connection.getSeq(),_connection.getEof()));
+		  _connection.sendMessage(Commands.config("custom:session_desc", Commands.SESSION, _connection.getSeq(), _connection.getEof()));
 		  Thread.sleep(500);
 	}
 }

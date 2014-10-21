@@ -7,7 +7,7 @@ public class Connection {
 	private String _addr;
 	private int _port;
 	private String _eof;
-	private String _message;
+	private int _seq;
 	DatagramSocket _socket;
 	InetAddress _server;
 	DatagramPacket _packet;
@@ -21,6 +21,19 @@ public class Connection {
 		initSocket();
 		
 	}
+	
+	
+
+	public String getEof() {
+		return _eof;
+	}
+
+
+
+	public int getSeq() {
+		return ++_seq;
+	}
+
 
 	public void initPacket() {
 		byte buffer[] = null;
@@ -51,7 +64,7 @@ public class Connection {
 	}
 
 	public void sendMessage(String message){
-		 byte buffer[] = _message.getBytes();
+		 byte buffer[] = message.getBytes();
 		 _packet.setData(buffer);
 		 try {
 			_socket.send(_packet);

@@ -8,27 +8,26 @@ public final class Commands {
 	  private final static String EMERGENCYMOTORSCUT = "290717952";
 	  private final static String TAKEOFF = "290718208";
 	  private final static String ID = "1";
-	  //GEOFFREY:13-10-14:mis en protected pour que les autres classes puissent y avoir acces
 	  protected final static String SESSION = "ses";
 	  protected final static String PROFILE = "pro";
 	  protected final static String APPLI = "app";
-	  private final static String KEYVIDEOCHANNEL = "video:video_channel";
-	  private final static String VALUEVIDEOCHANNELFRONT = "0";
-	  private final static String VALUEVIDEOCHANNELVERTICAL = "1";
-	  private final static String KEYVIDEOCODEC = "video:video_codec";
-	  private final static String VALUEVIDEOCODEC129 ="129";
+	  public final static String KEYVIDEOCHANNEL = "video:video_channel";
+	  public final static String VALUEVIDEOCHANNELFRONT = "0";
+	  public final static String VALUEVIDEOCHANNELVERTICAL = "1";
+	  public final static String KEYVIDEOCODEC = "video:video_codec";
+	  public final static String VALUEVIDEOCODEC129 ="129";
 	  
-	  //calibre le drone, une fois stabilise
+	  //calibre le drone, une fois stabilise (a faire manuellement)
 	  public static String calibrate(int seq, String ID, String eof){
 		  return "AT*CALIB=" + ++seq + "," + ID +eof;
 	  }
 	  
-	  //calibrage horizontal : verifie que le drone soit sur un support stable
+	  //calibrage horizontal : verifie que le drone soit sur un support stable (a faire au debut)
 	  public static String check(int seq, String eof){
 		  return "AT*FTRIM=" + ++seq + eof;
 	  }
 	  
-	  //fait planer le drone
+	  //fait planer le drone (il est stable en l'air)
 	  public static String hover(int seq, String eof){
 		  return "AT*PCMD="+ ++seq + ",0,0,0,0,0" + eof;
 	  }
