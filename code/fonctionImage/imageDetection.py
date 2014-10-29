@@ -1,7 +1,7 @@
-#!/usr/bin/python
-
 from PIL.Image import *
 
 def main():
-	img = open("../IHM/ihm.png")
+	img = open("../../doc/IHM/ihm.png")
+	Image.show(img)
 
+main()
