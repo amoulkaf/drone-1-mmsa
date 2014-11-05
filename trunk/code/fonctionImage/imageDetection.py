@@ -27,15 +27,14 @@ def isDetectedArea(img, x, y, currentPix):
 	l_area = l//SCALE
 	h_area = h//SCALE
 	isDifferent = False
-	if (x-l_area) > 0 and (y-h_area) > 0 and pixelEqualsTo(currentPix):
-		if (x+l_area) < l and (y+h_area) < h:
-			for i in range(x, x+l_area+1):
-				for j in range(y, y+h_area+1):
-					if img.getpixel((i,j)) != currentPix:
-						isDifferent = True
-						break
-			if not(isDifferent):
-				return True
+	if (x+l_area) < l and (y+h_area) < h and pixelEqualsTo(currentPix):
+		for i in range(x, x+l_area+1):
+			for j in range(y, y+h_area+1):
+				if img.getpixel((i,j)) != currentPix:
+					isDifferent = True
+					break
+		if not(isDifferent):
+			return True
 	return False
 
 # detect if there is an area of pixel 
@@ -47,10 +46,12 @@ def detectPix(img):
 			currentPix = img.getpixel((x,y))
 			#pixelEqualsTo(currentPix)
 			if isDetectedArea(img,x,y,currentPix):
-				print("Area detected")
-				print "color : ",currentPix
-				print "coordinates : ",(x,y)
+				#print("Area detected")
+				#print "color : ",currentPix
+				#print "coordinates : ",(x,y)
+				print ("true")
 				return
+	print("false")
 
 
 def main():
