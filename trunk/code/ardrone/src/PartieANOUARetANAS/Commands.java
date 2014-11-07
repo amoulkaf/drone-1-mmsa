@@ -32,7 +32,7 @@ public final class Commands {
 	  }
 	  
 	  //Deplacement horizontal a droite
-	  public static String horizontalRight1(int seq){
+	  public static String horizontalRight(int seq){
 		  return move(pos754,0,0,0,seq);
 	  }
 	  
@@ -72,7 +72,7 @@ public final class Commands {
 	  }
 	  
 	  //calibre le drone, une fois stabilise (a faire manuellement)
-	  public static String calibrate(int seq, String ID){
+	  public static String calibrate(int seq){
 		  return "AT*CALIB=" + seq + "," + ID ;
 	  }
 	  

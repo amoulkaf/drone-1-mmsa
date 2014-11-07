@@ -11,6 +11,9 @@ import java.net.*;
 public class Controller {
 	private Connection _connection, _connectionFake;
 	
+	public int getSeq(){
+		return _connection.getSeq();
+	}
 	public Controller(String addr, int port, String addrFake, int portFake){
 		_connection = new Connection(addr, port, "\r");
 		_connectionFake = new Connection(addrFake, portFake, "\n");
