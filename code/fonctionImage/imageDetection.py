@@ -3,13 +3,12 @@
 
 from PIL.Image import *
 from threading import Thread
-import time
 
 FILEPATH = "../../doc/IHM/ihm.png"
 # limit inf of r,g,b component
 RANGE_INF = 0
 # limit sup of r,g,b component
-RANGE_SUP = 0
+RANGE_SUP = 35
 # scale of the area to find
 SCALE = 20
 
