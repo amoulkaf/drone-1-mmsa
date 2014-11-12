@@ -9,7 +9,7 @@ FILEPATH = "../../doc/IHM/ihm.png"
 # limit inf of r,g,b component
 RANGE_INF = 0
 # limit sup of r,g,b component
-RANGE_SUP = 50
+RANGE_SUP = 0
 # scale of the area to find
 SCALE = 20
 
@@ -43,13 +43,14 @@ def isDetectedArea(img, x, y, currentPix):
 # [(RANGE_INF,RANGE_INF, RANGE_INF),(RANGE_SUP,RANGE_SUP,RANGE_SUP)]
 def detectPix(img, x1, y1, x2, y2):
 	#(l,h) = img.size
+	(i,j) = (x1,y1)
 	for i in range(x1,x2):
 		for j in range(y1,y2):
 			currentPix = img.getpixel((i,j))
 			#pixelEqualsTo(currentPix)
 			if isDetectedArea(img,i,j,currentPix):
 				#print("Area detected")
-				print "color : ",currentPix
+				#print "color : ",currentPix
 				print "coordinates : ",(i,j)
 				print ("true")
 				return
@@ -72,14 +73,21 @@ class Calcul(Thread):
 
 def main():
 	img = open(FILEPATH)
+	img1 = open(FILEPATH)
+	img2 = open(FILEPATH)
 #	detectPix(img)
 	(l,h) = img.size
-	l1 = l//2
+	length = l//3
 
-	t = Calcul(img, 0, 0, l1, h)
-	d = Calcul(img, l1, 0, l, h)
-	t.start()
+	t = Calcul(img, 0, 0, l, h)
+	"""	
+	t = Calcul(img, 0, 0, length, h)
+	d = Calcul(img1, length, 0, 2*length, h)
+	p = Calcul(img2, 2*length, 0, l, h)
 	d.start()
+	p.start()
+	"""	
+	t.start()
 
 if __name__ == "__main__": 
 	main()
