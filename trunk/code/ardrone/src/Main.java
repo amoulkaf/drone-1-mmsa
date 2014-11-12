@@ -36,8 +36,23 @@ public class Main {
 		return rgb;
 	}
 
-	// Pire des cas (pas de detection de zone) : 0.185s
-	// Alors qu'en python : 1.7s
+	// Pire des cas (pas de detection de zone) : 0.6s
+	// Alors qu'en python : 2.5s
+	final static int RANGE_INF = 0;
+    final static int RANGE_SUP = 35;
+    final static int SCALE = 20;
+	
+    public static boolean pixelEqualsTo(int[] rgb){
+		int r = rgb[0];
+		int g = rgb[1];
+		int b = rgb[2];
+		for (int x=RANGE_INF; x <=RANGE_SUP; x++){
+			if (r == x && g == x && b == x)
+				return true;
+		}
+		return false;
+	}
+	
 	public static int test(){
 		System.out.println("---------- Programme Java");
 
@@ -54,8 +69,6 @@ public class Main {
 	        
 	        int width = img.getWidth();
 	        int height = img.getHeight();
-	        final int COLOR = 20;
-	        final int SCALE = 20;
 	        
 	        for(int x = 0; x < width; x++){
 	            for(int y = 0; y < height; y++){
@@ -69,9 +82,7 @@ public class Main {
 	            	boolean dif = false;
 	            	if ((x+l_area) < width && 
             			(y+h_area) < height && 
-            			r == 0 &&
-            			g == 0 &&
-            			b == 0){
+            			pixelEqualsTo(rgb)){
 	            		for (int i=x; i<=x+l_area; i++){
 	            			for (int j=y; j<=y+h_area;j++){
 	            				//System.out.println(rgb);
@@ -80,11 +91,13 @@ public class Main {
 	        	            	g1 = rgb1[1];
 	        	            	b1 = rgb1[2];
 	            				//System.out.println("Pix : "+i+";"+j+"-"+rgb1[0]+" "+rgb1[1]+" "+rgb1[2]);
-	            				if (r1 != r || g1 != g || b1 != b){
-	            					dif = true;
-	            					//System.out.println(i+";"+j);
-	            					break;
-	            				}
+	        	            	for (int s = RANGE_INF; s<=RANGE_SUP; s++){
+		            				if (r1 != r || g1 != g || b1 != b){
+		            					dif = true;
+		            				//	System.out.println(i+";"+j);
+		            					break;
+		            				}
+	        	            	}
 	            			}
 	            		}
 	            		
