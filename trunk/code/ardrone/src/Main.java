@@ -39,6 +39,8 @@ public class Main {
 	// Pire des cas (pas de detection de zone) : 0.185s
 	// Alors qu'en python : 1.7s
 	public static int test(){
+		System.out.println("---------- Programme Java");
+
 		BufferedImage img;
 		Chrono chrono = new Chrono();
 		chrono.start();
@@ -87,7 +89,8 @@ public class Main {
 	            		}
 	            		
 	            		if (!dif){
-	            			System.out.println("Detected : "+x+";"+y);
+	            			System.out.println("Detected : ");
+	            			System.out.println("Coordinates : "+x+";"+y);
 	            			chrono.stop();
 	            			chrono.printMilliSec();
 	            			return 0;
@@ -107,39 +110,39 @@ public class Main {
 	}
 	
 	public static void testPy(){
-			//TEST:GEOFFREY:17-10-2014:test d'import fichier .py
-			String s = null;
-			try {
-				String prg ="python ../fonctionImage/imageDetection.py";
-				
-				Chrono chrono = new Chrono();
-				chrono.start();
-				
-				Process p = Runtime.getRuntime().exec(prg);
-				
-				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				BufferedReader stdError = new BufferedReader(new  InputStreamReader(p.getErrorStream()));
-				
-	            System.out.println("Here is the standard output of the command:");
-				while ((s = stdInput.readLine()) != null) {
-					System.out.println(s);
-					if (s.equals("true")){
-	                	p.destroy();
-	                	break;
-	                }
-	              
-	            }
-				
-	           // while ((s = stdError.readLine()) != null) {
-	            //    System.out.println(s);
-	           // }
-				chrono.stop();
-				chrono.printMilliSec();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+		//TEST:GEOFFREY:17-10-2014:test d'import fichier .py
+		System.out.println("---------- Programme Python");
+		String s = null;
+		try {
+			String prg ="python ../fonctionImage/imageDetection.py";
+			
+			Chrono chrono = new Chrono();
+			chrono.start();
+			
+			Process p = Runtime.getRuntime().exec(prg);
+			
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		//	BufferedReader stdError = new BufferedReader(new  InputStreamReader(p.getErrorStream()));
+			
+			while ((s = stdInput.readLine()) != null) {
+				System.out.println(s);
+				if (s.equals("true")){
+                	p.destroy();
+                	break;
+                }
+              
+            }
+			
+           // while ((s = stdError.readLine()) != null) {
+            //    System.out.println(s);
+           // }
+			chrono.stop();
+			chrono.printMilliSec();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	 
