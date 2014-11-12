@@ -2,6 +2,8 @@
 # area of 1/SCALE area
 
 from PIL.Image import *
+from threading import Thread
+import time
 
 FILEPATH = "../../doc/IHM/ihm.png"
 # limit inf of r,g,b component
@@ -39,24 +41,46 @@ def isDetectedArea(img, x, y, currentPix):
 
 # detect if there is an area of pixel 
 # [(RANGE_INF,RANGE_INF, RANGE_INF),(RANGE_SUP,RANGE_SUP,RANGE_SUP)]
-def detectPix(img):
-	(l,h) = img.size
-	for x in range(l):
-		for y in range(h):
-			currentPix = img.getpixel((x,y))
+def detectPix(img, x1, y1, x2, y2):
+	#(l,h) = img.size
+	for i in range(x1,x2):
+		for j in range(y1,y2):
+			currentPix = img.getpixel((i,j))
 			#pixelEqualsTo(currentPix)
-			if isDetectedArea(img,x,y,currentPix):
+			if isDetectedArea(img,i,j,currentPix):
 				#print("Area detected")
-				#print "color : ",currentPix
-				#print "coordinates : ",(x,y)
+				print "color : ",currentPix
+				print "coordinates : ",(i,j)
 				print ("true")
 				return
 	print("false")
 
 
+##	TEST DES THREADS
+
+class Calcul(Thread):
+	def __init__(self,img,x1,y1,x2,y2):
+		Thread.__init__(self)
+		self.img = img
+		self.x1 = x1
+		self.y1 = y1
+		self.x2 = x2
+		self.y2 = y2
+	
+	def run(self):
+		detectPix(self.img, self.x1, self.y1, self.x2, self.y2)
+
 def main():
 	img = open(FILEPATH)
-	detectPix(img)
+#	detectPix(img)
+	(l,h) = img.size
+	l1 = l//2
+
+	t = Calcul(img, 0, 0, l1, h)
+	d = Calcul(img, l1, 0, l, h)
+	t.start()
+	d.start()
 
 if __name__ == "__main__": 
 	main()
+
