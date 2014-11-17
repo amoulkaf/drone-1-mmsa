@@ -29,7 +29,7 @@ public class AirState implements IDroneState {
 
 	// Decoller
 	public void takeOff(Controller controller) {
-		System.out.println("Warning : Drone on the groud.");
+		System.out.println("Warning : Drone in the air.");
 	}
 
 	// Atterir
@@ -61,11 +61,35 @@ public class AirState implements IDroneState {
 		String message = Commands.goUp(controller.getSeq());
 		controller.sendMessage(message);
 	}
-	
-	//Calibrer
-	public void calibrate(Controller controller){
+
+	// Calibrer
+	public void calibrate(Controller controller) {
 		String message = Commands.calibrate(controller.getSeq());
 		controller.sendMessage(message);
+	}
+
+	// Flip en avant
+
+	public void frontFlip(Controller controller) {
+		System.out.println("Command cannot be called indoor\n");
+	}
+
+	// Flip en arriere
+	public void backFlip(Controller controller) {
+
+		System.out.println("Command cannot be called indoor\n");
+	}
+
+	// Flip a gauche
+	public void leftFlip(Controller controller) {
+
+		System.out.println("Command cannot be called indoor\n");
+	}
+
+	// Flip a droit
+	public void rightFlip(Controller controller) {
+
+		System.out.println("Command cannot be called indoor\n");
 	}
 
 }
