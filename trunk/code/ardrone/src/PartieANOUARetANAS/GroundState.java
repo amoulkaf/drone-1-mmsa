@@ -53,9 +53,32 @@ public class GroundState implements IDroneState {
 	public void goUp(Controller controller) {
 		System.out.println("Warning : Drone on the groud.");
 	}
-	
-	//Calibrer
-	public void calibrate(Controller controller){
+
+	// Calibrer
+	public void calibrate(Controller controller) {
 		System.out.println("Warning : Drone on the groud.");
 	}
+
+	public void frontFlip(Controller controller) {
+		System.out.println("Warning : Drone on the groud.\n");
+	}
+
+	// Flip en arriere
+	public void backFlip(Controller controller) {
+
+		System.out.println("Warning : Drone on the groud.\n");
+	}
+
+	// Flip a gauche
+	public void leftFlip(Controller controller) {
+
+		System.out.println("Warning : Drone on the groud.\n");
+	}
+
+	// Flip a droit
+	public void rightFlip(Controller controller) {
+
+		System.out.println("Warning : Drone on the groud.\n");
+	}
+
 }

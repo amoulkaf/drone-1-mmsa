@@ -31,8 +31,20 @@ public interface IDroneState {
 
 	// Monter
 	public void goUp(Controller controller);
-	
-	//Calibrer
+
+	// Calibrer
 	public void calibrate(Controller controller);
-	
+
+	// Flit en avant
+	public void frontFlip(Controller controller);
+
+	// Flip en arriere
+	public void backFlip(Controller controller);
+
+	// Flip a gauche
+	public void leftFlip(Controller controller);
+
+	// Flip a droit
+	public void rightFlip(Controller controller);
+
 }

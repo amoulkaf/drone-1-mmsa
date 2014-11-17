@@ -15,7 +15,8 @@ public class Controller {
 		return _connection.getSeq();
 	}
 
-	public Controller(String addr, int port, String addrFake, int portFake) throws InterruptedException {
+	public Controller(String addr, int port, String addrFake, int portFake)
+			throws InterruptedException {
 		_connection = new Connection(addr, port, "\r");
 		_connectionFake = new Connection(addrFake, portFake, "\n");
 		this.initialize();
@@ -33,12 +34,11 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
 	// sequence d'initialisation a executer avant tout autre commande a envoyer
-	public void initialize() throws InterruptedException{
+	public void initialize() throws InterruptedException {
 		System.out.println("initialisation du drone\n");
 		sendMessage(Commands.configIDS(_connection.getSeq()));
 		sendMessage(Commands.config("custom:session_id", "-all",

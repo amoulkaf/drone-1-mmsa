@@ -29,7 +29,6 @@ import PartieANOUARetANAS.DroneStateContext;
  M : flip a droit
  T : wave
  Y : turnarroud
- U : led
  
  */
 
@@ -113,6 +112,36 @@ public class KeyboardDrone implements KeyListener {
 			{
 				System.out.println("key SHIFT pressed\n");
 				_context.calibrate();
+			}
+			break;	
+			case KeyEvent.VK_ESCAPE:
+			{
+				System.out.println("key ESCAPE pressed\n");
+				_context.switchState();
+			}
+			break;
+			case KeyEvent.VK_O:
+			{
+				System.out.println("key O pressed\n");
+				_context.frontFlip();
+			}
+			break;
+			case KeyEvent.VK_K:
+			{
+				System.out.println("key K pressed\n");
+				_context.leftFlip();
+			}
+			break;
+			case KeyEvent.VK_L:
+			{
+				System.out.println("key L pressed\n");
+				_context.backFlip();
+			}
+			break;
+			case KeyEvent.VK_M:
+			{
+				System.out.println("key M pressed\n");
+				_context.rightFlip();
 			}
 			break;
 		}
