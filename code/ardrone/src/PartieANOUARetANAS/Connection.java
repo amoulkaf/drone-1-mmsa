@@ -36,7 +36,8 @@ public class Connection {
 
 
 	public void initPacket() {
-		byte buffer[] = null;
+		String init = "Init packet";
+		byte buffer[] = init.getBytes();
 		int length = 0;
 		_packet = new DatagramPacket(buffer, length, _server, _port);
 		
@@ -51,7 +52,7 @@ public class Connection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	System.out.println("Initialisation serveur\n");
 	}
 
 	// initialise le socket
@@ -61,6 +62,7 @@ public class Connection {
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Initialisation socket\n");
 	}
 
 	public void sendMessage(String message){
@@ -72,7 +74,7 @@ public class Connection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+		 System.out.println("send message \n");
 	}
 	
 }

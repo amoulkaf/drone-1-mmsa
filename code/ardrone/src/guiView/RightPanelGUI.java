@@ -2,7 +2,7 @@ package guiView;
 
 import guiListener.ControlRobotListener;
 import guiModel.ConsoleModel;
-
+import guiListener.KeyboardDrone;
 import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,7 +19,7 @@ public class RightPanelGUI extends JPanel implements Observer{
 	private JTextArea _consoleText;
 	private JButton _takeControl;
 	
-	public RightPanelGUI(){
+	public RightPanelGUI(KeyboardDrone k){
 		this.setLayout(new BorderLayout());
 		
 		_takeControl = new JButton("Prendre le controle du robot");
@@ -33,6 +33,7 @@ public class RightPanelGUI extends JPanel implements Observer{
 		_consoleModel = new ConsoleModel();
 		_consoleModel.addObserver(this);
 		_consoleText = new JTextArea(_consoleModel.getText());
+		_consoleText.addKeyListener(k);
 		//<TEST>
 		_consoleModel.addText("ceci est un test");
 		//</TEST>

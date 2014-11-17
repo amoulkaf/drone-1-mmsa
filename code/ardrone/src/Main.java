@@ -10,7 +10,7 @@ import guiView.MainWindowGUI;
 
 public class Main {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		//new MainWindowGUI();
 		
 		//Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
@@ -158,7 +158,7 @@ public class Main {
 		}	
 	}
 	
-	 
+	 */
 }
 
 

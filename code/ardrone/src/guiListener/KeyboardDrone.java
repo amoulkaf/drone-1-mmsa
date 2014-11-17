@@ -19,6 +19,18 @@ import PartieANOUARetANAS.DroneStateContext;
  Q : pivoter a gauche
  S : descendre
  Z : monter
+ SHIFT : calibrer
+ 
+ ---MODE EXTERIEUR---
+ BACKSPACE : passer en mode exterieur
+ O : flip en avant
+ L : flip en arriere
+ K : flip a gauche
+ M : flip a droit
+ T : wave
+ Y : turnarroud
+ U : led
+ 
  */
 
 //for ar-drone
@@ -34,57 +46,75 @@ public class KeyboardDrone implements KeyListener {
 
 	public void execute(int key){
 		switch(key){
-		case KeyEvent.VK_UP:
-		{
-			_context.forward();
-		}
-		break;
-		case KeyEvent.VK_DOWN :
-		{
-			_context.backward();
-		}
-		break;
-		case KeyEvent.VK_RIGHT :
-		{
-			_context.horizontalRight();
-		}
-		break;
-		case KeyEvent.VK_LEFT :
-		{
-			_context.horizontalLeft();
-		}
-		break;
-		case KeyEvent.VK_SPACE:
-		{
-			_context.takeOff();
-		}
-		break;
-		case KeyEvent.VK_CONTROL:
-		{
-			_context.landing();
-		}
-		break;
-		case KeyEvent.VK_Q:
-		{
-			_context.rotateLeft();
-		}
-		break;
-		case KeyEvent.VK_D:
-		{
-			_context.rotateRight();
-		}
-		break;
-		case KeyEvent.VK_S:
-		{
-			_context.goDown();
-		}
-		break;
+			case KeyEvent.VK_UP:
+			{
+				System.out.println("key UP pressed\n");
+				_context.forward();
+			
+			}
+			break;
+			case KeyEvent.VK_DOWN :
+			{
+				System.out.println("key DOWN pressed\n");
+				_context.backward();
+			}
+			break;
+			case KeyEvent.VK_RIGHT :
+			{
+				System.out.println("key RIGHT pressed\n");
+				_context.horizontalRight();
+			}
+			break;
+			case KeyEvent.VK_LEFT :
+			{
+				System.out.println("key LEFT pressed\n");
+				_context.horizontalLeft();
+			}
+			break;
+			case KeyEvent.VK_SPACE:
+			{
+				System.out.println("key SPACE pressed\n");
+				_context.takeOff();
+			}
+			break;
+			case KeyEvent.VK_CONTROL:
+			{
+				System.out.println("key Ctrl pressed\n");
+				_context.landing();
+			}
+			break;
+			case KeyEvent.VK_Q:
+			{
+				System.out.println("key Q pressed\n");
+				_context.rotateLeft();
+			}
+			break;
+			case KeyEvent.VK_D:
+			{
+				System.out.println("key D pressed\n");
+				_context.rotateRight();
+			}
+			break;
+			case KeyEvent.VK_S:
+			{
+				System.out.println("key S pressed\n");
+				_context.goDown();
+			}
+			break;
 		
-		case KeyEvent.VK_Z:
-		{
-			_context.goUp();
-		}
-		break;
+			case KeyEvent.VK_Z:
+			{
+				System.out.println("key Z pressed\n");
+				_context.goUp();
+			}
+			break;
+			
+			case KeyEvent.VK_SHIFT:
+			{
+				System.out.println("key SHIFT pressed\n");
+				_context.calibrate();
+			}
+			break;
 		}
 	}
 
