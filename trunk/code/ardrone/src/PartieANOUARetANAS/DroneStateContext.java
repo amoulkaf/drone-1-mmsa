@@ -18,7 +18,9 @@ public class DroneStateContext {
 
 	// avancer
 	public void forward() {
+		System.out.println("drone context forward called\n");
 		_currentState.forward(_controller);
+		
 	}
 
 	// Reculer
@@ -55,7 +57,7 @@ public class DroneStateContext {
 
 	// Pivoter a gauche
 	public void rotateLeft() {
-		_currentState.rotateRight(_controller);
+		_currentState.rotateLeft(_controller);
 	}
 
 	// Descendre

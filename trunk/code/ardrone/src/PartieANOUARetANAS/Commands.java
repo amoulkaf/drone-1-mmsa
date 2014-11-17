@@ -21,6 +21,37 @@ public final class Commands {
 	  private static long neg754 = Convert.convert754(neg);
 	  private static long pos754 = Convert.convert754(pos);
 	  
+	  
+	  //Flip en avant
+	  public static String frontFlip(int seq){
+		  return "AT*ANIM=" + seq + ",16,5";
+	  }
+	  //Flip en arriere
+	  public static String backFlip(int seq){
+		  
+	  }
+	  //Flip a gauche
+	  public static String leftFlip(int seq){
+		  
+	  }
+	  //Flip a droit
+	  public static String rightFlip(int seq){
+		  
+	  }
+	  //wave
+	  public static String wave(int seq){
+		  
+	  }
+	  //turnaround
+	  public static String turnaround(int seq){
+		  
+	  }
+	  //led
+	  public static String led(int seq){
+		  
+	  }
+	  
+	  
 	  //Avancer
 	  public static String forward(int seq){
 		  return move(0,neg754,0,0,seq);
