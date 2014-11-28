@@ -19,7 +19,7 @@ public class RightPanelGUI extends JPanel implements Observer{
 	private JTextArea _consoleText;
 	private JButton _takeControl;
 	
-	public RightPanelGUI(KeyboardDrone k){
+	public RightPanelGUI(KeyboardDrone k, ConsoleModel model){
 		this.setLayout(new BorderLayout());
 		
 		_takeControl = new JButton("Prendre le controle du robot");
@@ -30,24 +30,23 @@ public class RightPanelGUI extends JPanel implements Observer{
 		JPanel consolePanel = new JPanel();
 		consolePanel.setLayout(new BorderLayout());
 		JLabel consoleLabel = new JLabel("Console");
-		_consoleModel = new ConsoleModel();
+		_consoleModel = model;
 		_consoleModel.addObserver(this);
 		_consoleText = new JTextArea(_consoleModel.getText());
 		_consoleText.addKeyListener(k);
 		//<TEST>
-		_consoleModel.addText("ceci est un test");
+		//_consoleModel.addText("ceci est un test");
 		//</TEST>
 		_consoleText.setRows(NBROWS);
 		_consoleText.setEditable(false);
 		consolePanel.add(consoleLabel, BorderLayout.NORTH);
 		consolePanel.add(_consoleText, BorderLayout.SOUTH);
-		
+
 		this.add(_takeControl, BorderLayout.NORTH);
 		this.add(consolePanel, BorderLayout.SOUTH);
 	}
 
 	public void update(Observable o, Object arg) {
-		// TODO 
 		//	*update si le robot est bien detecte : classe Robot (observable) avec boolean "isDetected"
 		//	*update a chaque instruction :
 		//		**deplacement drone : classe Drone observable
