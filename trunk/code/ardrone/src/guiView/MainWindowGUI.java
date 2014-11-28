@@ -1,6 +1,7 @@
 package guiView;
 
 import guiListener.KeyboardDrone;
+import guiModel.ConsoleModel;
 
 import java.awt.FlowLayout;
 import java.awt.TextField;
@@ -14,14 +15,14 @@ public class MainWindowGUI extends JFrame{
 	private static final String TITLE = "Sauveteur drone"; 
 	private TextField display;
 	
-	public MainWindowGUI(KeyboardDrone keyboard){
+	public MainWindowGUI(KeyboardDrone keyboard, ConsoleModel model){
 		this.setTitle(TITLE);
 		this.setSize(WIDTH,HEIGHT);
 		this.setLocationRelativeTo(null);
 
 		this.setLayout(new FlowLayout());
 		LeftPanelGUI leftPanel = new LeftPanelGUI();
-		RightPanelGUI rightPanel = new RightPanelGUI(keyboard);
+		RightPanelGUI rightPanel = new RightPanelGUI(keyboard, model);
 		
 		this.add(leftPanel);
 		this.add(rightPanel);

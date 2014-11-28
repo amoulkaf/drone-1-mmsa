@@ -6,23 +6,26 @@ import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
 
+import guiListener.KeyboardDrone;
+import guiModel.ConsoleModel;
 import guiView.MainWindowGUI;
 
 public class Main {
 
-	/*public static void main(String[] args) {
-		//new MainWindowGUI();
+	public static void main(String[] args) {
+		ConsoleModel model = new ConsoleModel();
+		new MainWindowGUI(new KeyboardDrone(null, model),model);
 		
 		//Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
 		//Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
 		  
-		testPy();
-		test();
+		//testPy();
+		//test();
 		
 		//ardrone.start();
 		//localhost.start();
 	}
-	
+/*	
 	private static int[] getPixelData(BufferedImage img, int x, int y) {
 		int argb = img.getRGB(x, y);
 
