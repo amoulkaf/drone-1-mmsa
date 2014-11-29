@@ -24,9 +24,36 @@ public class GroundState implements IDroneState {
 
 	// Decoller
 	public void takeOff(Controller controller) {
-		String message = Commands.takeOff(controller.getSeq());
+		//String message = Commands.takeOff(controller.getSeq());
+		String message;
+		
+		message = Commands.configIDS(controller.getSeq());
 		controller.sendMessage(message);
-
+		
+		message = Commands.configCodec(controller.getSeq());
+		controller.sendMessage(message);
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		while(true){
+			
+			message = Commands.configIDS(controller.getSeq());
+			controller.sendMessage(message);
+			
+			message = Commands.configCameraVertical(controller.getSeq());
+			controller.sendMessage(message);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// Atterir

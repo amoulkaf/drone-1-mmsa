@@ -141,5 +141,17 @@ public final class Commands {
 		return "AT*CONFIG_IDS=" + seq
 				+ ",\"7870b07f\",\"6bb4d6ff\",\"c96e70cf\"";
 	}
-
+	
+	
+	public static String configCodec(int seq) {
+		return "AT*CONFIG=" + seq + ",\"video:video_codec\",\"129\"";
+	}
+	
+	public static String configCameraVertical(int seq) {
+		return "AT*CONFIG="+ seq + ",\"video:video_channel\",\"1\"";
+	}
+	
+	public static String configCameraHorizontal(int seq) {
+		return "AT*CONFIG="+ seq + ",\"video:video_channel\",\"0\"";
+	}
 }
