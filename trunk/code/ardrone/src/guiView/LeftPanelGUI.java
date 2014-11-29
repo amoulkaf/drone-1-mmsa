@@ -18,6 +18,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.opencv.highgui.VideoCapture;
+import org.opencv.highgui.Highgui;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+
+import PartieANOUARetANAS.MatToBufImg;
+
 public class LeftPanelGUI extends JPanel implements Observer{
 	private static final String FRONTAL 	= "frontal";
 	private static final String VERTICAL 	= "vertical";
@@ -34,15 +41,39 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		_cameraView = FRONTAL;
 		_camImgTmp = null;
 		_camModel = new CameraModel();
+		MatToBufImg  mtbi = new MatToBufImg();
 		
 		_camModel.addObserver(this);
 		
 		this.setLayout(new BorderLayout());
+		System.out.print(System.getProperty("java.library.path"));
+		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
-		// TODO
-		//	* recuperer le stream du ARDrone
+		//System.loadLibrary("opencv-248");
+		Mat mat_stream = new Mat();
+		VideoCapture capture = new VideoCapture("tcp://192.168.1.1:5555");
+		
+		if(capture.isOpened()){
+			while(true){
+				capture.read(mat_stream);
+				if( !mat_stream.empty()){
+					this.setSize(mat_stream.width()+40,mat_stream.height()+60);
+					mtbi.setMatrix(mat_stream, ".png");
+					_camImgTmp = mtbi.getBufferedImage();
+					_camImgNew = _camImgTmp;
+					this.repaint();
+					
+				}
+			}
+			
+			
+		}
+				
+				
+		/*
 		
 		//<TEST>
+		
 		try {
 			_camImgTmp =  ImageIO.read(new File("../../doc/IHM/ihm.png"));
 		}
@@ -55,7 +86,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		Graphics g = _camImgNew.createGraphics();
 		g.drawImage(_camImgTmp, 0, 0, WIDTHIMG, HEIGHTIMG, null);
 		g.dispose();
-		
+		*/
 		_camLabel = new JLabel(new ImageIcon(_camImgNew));		
 		add(_camLabel, BorderLayout.NORTH);
 		
@@ -74,5 +105,10 @@ public class LeftPanelGUI extends JPanel implements Observer{
 			System.out.println("[LeftPaneGUI] Afficher ici la cam verticale");
 			// TODO
 		}
+	}
+	
+	@Override
+	public void paintComponent(Graphics g){
+		g.drawImage(_camImgNew,10,10,_camImgNew.getWidth(),_camImgNew.getHeight(),this);
 	}
 }

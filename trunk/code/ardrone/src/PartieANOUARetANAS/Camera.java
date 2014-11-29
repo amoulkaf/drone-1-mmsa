@@ -3,34 +3,31 @@ package PartieANOUARetANAS;
 import java.io.*;
 import java.net.*;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.highgui.VideoCapture;
+import org.opencv.highgui.Highgui;
+
 public class Camera extends Thread {
-	// Chargement du codec
-	// AT*CONFIG=<SEQ>,"video:video_codec","129"\r;
-
-	// Camera frontale
-	// AT*CONFIG=<SEQ>,"video:video_channel","0"\r;
-
-	// Camera verticale
-	// AT*CONFIG=<SEQ>,"video:video_channel","1"\r;
-
-	// ffplay -flags low_delay tcp://<IP ADDR>:<PORT>
-
-	// Chargement du codec
-	public String downloadCodec(int seq, String eof) {
-		return "AT*CONFIG=" + seq + "\"video:video_codec\",\"129\"" + eof;
-	}
-
-	// Camera frontale
-	public String frontCam(int seq, String eof) {
-		return "AT*CONFIG=" + seq + "\"video:video_channel\",\"0\"" + eof;
-	}
-
-	// Camera verticale
-	public String downCam(int seq, String eof) {
-		return "AT*CONFIG=" + seq + "\"video:video_channel\",\"1\"" + eof;
-	}
-
 	/*
+	 * // Chargement du codec // AT*CONFIG=<SEQ>,"video:video_codec","129"\r;
+	 * 
+	 * // Camera frontale // AT*CONFIG=<SEQ>,"video:video_channel","0"\r;
+	 * 
+	 * // Camera verticale // AT*CONFIG=<SEQ>,"video:video_channel","1"\r;
+	 * 
+	 * // ffplay -flags low_delay tcp://<IP ADDR>:<PORT>
+	 * 
+	 * // Chargement du codec public String downloadCodec(int seq, String eof) {
+	 * return "AT*CONFIG=" + seq + "\"video:video_codec\",\"129\"" + eof; }
+	 * 
+	 * // Camera frontale public String frontCam(int seq, String eof) { return
+	 * "AT*CONFIG=" + seq + "\"video:video_channel\",\"0\"" + eof; }
+	 * 
+	 * // Camera verticale public String downCam(int seq, String eof) { return
+	 * "AT*CONFIG=" + seq + "\"video:video_channel\",\"1\"" + eof; }
+	 * 
+	 * 
 	 * public void switchCamera(){
 	 * 
 	 * _connection.sendMessage();
@@ -57,5 +54,55 @@ public class Camera extends Thread {
 	 * 
 	 * System.out.println("----End of program----"); socket.close(); }
 	 */
+	
+	
+	private MatToBufImg _matToBufferedImageConverter;
+	
+	public void videoStartCaptur(){
+	
+		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+		
+		_matToBufferedImageConverter = new MatToBufImg();
+	    
+		VideoCapture capture = new VideoCapture();
+	    capture.open("tcp://192.168.1.1:5555");
+	    
+	    if(!capture.isOpened()){
+	    	System.out.println("faileu");
+	    } else {
+	    	Mat frame = new Mat();
+	    	while(true){
+	    		if(capture.read(frame)){
+	    			
+	    		}
+	    	}
+	    }
+	   
 
+	    /*
+	    IplImage frame;
+	    public void Capturing() {  
+	    capture = new Vide
+	    if(capture!=null)
+	    {
+	        while(true)
+	        {
+	            frame = cvQueryFrame(capture);
+	            cvShowImage("heloo", frame.asCvMat());
+
+	            cvSaveImage("hi.jpg", frame.asCvMat());//just saving image..
+
+	        }
+	    }
+
+	    else System.out.println("errro");
+	  }
+
+	     public static void main(final String[] args) {
+	     CapturingExample example = new CapturingExample();
+	     example.Capturing();
+	    }
+	
+		*/
+	}
 }
