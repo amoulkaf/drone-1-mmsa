@@ -39,7 +39,7 @@ public class KeyboardDrone implements KeyListener {
 	private ConsoleModel _model;
 	
 	public KeyboardDrone(Controller controller, ConsoleModel model) {
-		_context = new DroneStateContext(controller);
+		_context = new DroneStateContext(controller, model);
 		_model = model;
 	}
 

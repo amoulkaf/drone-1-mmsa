@@ -5,20 +5,27 @@ package PartieANOUARetANAS;
 //	il essaie d'importer le package Convert qui n'existe pas
 //import Convert;
 
+import guiModel.ConsoleModel;
+
 import java.io.*;
 import java.net.*;
 
 public class Controller {
 	private Connection _connection, _connectionFake;
+	private ConsoleModel _consoleModel;
 
 	public int getSeq() {
 		return _connection.getSeq();
 	}
 
-	public Controller(String addr, int port, String addrFake, int portFake)
-			throws InterruptedException {
-		_connection = new Connection(addr, port, "\r");
-		_connectionFake = new Connection(addrFake, portFake, "\n");
+	public Controller(String addr, 
+					int port, 
+					String addrFake, 
+					int portFake, 
+					ConsoleModel consoleModel) throws InterruptedException {
+		_connection = new Connection(addr, port, "\r", consoleModel);
+		_connectionFake = new Connection(addrFake, portFake, "\n", consoleModel);
+		_consoleModel = consoleModel;
 		this.initialize();
 	}
 
@@ -40,6 +47,7 @@ public class Controller {
 	// sequence d'initialisation a executer avant tout autre commande a envoyer
 	public void initialize() throws InterruptedException {
 		System.out.println("initialisation du drone\n");
+		_consoleModel.writeInFile("UAV is inializing. Please wait...");
 		sendMessage(Commands.configIDS(_connection.getSeq()));
 		sendMessage(Commands.config("custom:session_id", "-all",
 				_connection.getSeq()));
@@ -88,5 +96,6 @@ public class Controller {
 				_connection.getSeq()));
 		Thread.sleep(250);
 		sendMessage(Commands.check(_connection.getSeq()));
+		_consoleModel.writeInFile("[OK] UAV is now initialized.");
 	}
 }
