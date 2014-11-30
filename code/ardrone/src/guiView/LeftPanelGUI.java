@@ -23,7 +23,8 @@ import org.opencv.highgui.Highgui;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
-import PartieANOUARetANAS.MatToBufImg;
+//import PartieANOUARetANAS.MatToBufImg; //j'ai mis le MatToBufImg dans ton Pakage guiView, pour ne pas créer de conflit c'est provisoir, j'arrange ça lundi car on a les fichiers au cremi
+    
 
 public class LeftPanelGUI extends JPanel implements Observer{
 	private static final String FRONTAL 	= "frontal";
