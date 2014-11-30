@@ -1,4 +1,6 @@
 package PartieANOUARetANAS;
+import guiModel.ConsoleModel;
+
 import java.io.*;
 import java.net.*;
 
@@ -8,18 +10,20 @@ public class Connection {
 	private int _port;
 	private String _eof;
 	private int _seq;
-	DatagramSocket _socket;
-	InetAddress _server;
-	DatagramPacket _packet;
+	private DatagramSocket _socket;
+	private InetAddress _server;
+	private DatagramPacket _packet;
 	
-	public Connection(String addr, int port, String eof) {
+	private ConsoleModel _consoleModel;
+	
+	public Connection(String addr, int port, String eof, ConsoleModel consoleModel) {
 		_addr = addr;
 		_port = port;
 		_eof = eof;
 		initServer();
 		initPacket();
 		initSocket();
-		
+		_consoleModel = consoleModel;
 	}
 	
 	
@@ -40,8 +44,6 @@ public class Connection {
 		byte buffer[] = init.getBytes();
 		int length = 0;
 		_packet = new DatagramPacket(buffer, length, _server, _port);
-		
-
 	}
 
 	// initialise le serveur
@@ -53,6 +55,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 	System.out.println("Initialisation serveur\n");
+	_consoleModel.writeInFile("Initializing server.");
 	}
 
 	// initialise le socket
@@ -63,6 +66,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 		System.out.println("Initialisation socket\n");
+		_consoleModel.writeInFile("Initializing socket.");
 	}
 
 	public void sendMessage(String message){
@@ -75,6 +79,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 		 System.out.println("send message \n");
+		 _consoleModel.writeInFile("Message sent.");
 	}
 	
 }

@@ -1,4 +1,4 @@
-package guiView;
+package PartieANOUARetANAS;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

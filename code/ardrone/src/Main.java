@@ -14,13 +14,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		ConsoleModel model = new ConsoleModel();
-		new MainWindowGUI(new KeyboardDrone(null, model),model);
+		// KeyboardDrone dans RightPanelGUI
+		new MainWindowGUI(model);
 		
 		//Drone ardrone = new Drone("192.168.1.1", 5556, "\r", "AR-Drone");
 		//Drone localhost = new Drone("localhost", 7000, "\n", "localhost");
 		  
 		//testPy();
-		//test();
+		//testJava();
 		
 		//ardrone.start();
 		//localhost.start();
@@ -56,7 +57,7 @@ public class Main {
 		return false;
 	}
 	
-	public static int test(){
+	public static int testJava(){
 		System.out.println("---------- Programme Java");
 
 		BufferedImage img;

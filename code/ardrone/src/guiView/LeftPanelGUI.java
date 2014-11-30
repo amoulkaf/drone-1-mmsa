@@ -23,7 +23,10 @@ import org.opencv.highgui.Highgui;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
-//import PartieANOUARetANAS.MatToBufImg; //j'ai mis le MatToBufImg dans ton Pakage guiView, pour ne pas créer de conflit c'est provisoir, j'arrange ça lundi car on a les fichiers au cremi
+import PartieANOUARetANAS.MatToBufImg;
+
+//import PartieANOUARetANAS.MatToBufImg; //j'ai mis le MatToBufImg dans ton Pakage guiView, 
+//pour ne pas créer de conflit c'est provisoir, j'arrange ça lundi car on a les fichiers au cremi
     
 
 public class LeftPanelGUI extends JPanel implements Observer{
@@ -51,7 +54,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
 		//System.loadLibrary("opencv-248");
-		Mat mat_stream = new Mat();
+	/*	Mat mat_stream = new Mat();
 		VideoCapture capture = new VideoCapture("tcp://192.168.1.1:5555");
 		
 		if(capture.isOpened()){
@@ -71,7 +74,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		}
 				
 				
-		/*
+		*/
 		
 		//<TEST>
 		
@@ -87,7 +90,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		Graphics g = _camImgNew.createGraphics();
 		g.drawImage(_camImgTmp, 0, 0, WIDTHIMG, HEIGHTIMG, null);
 		g.dispose();
-		*/
+		
 		_camLabel = new JLabel(new ImageIcon(_camImgNew));		
 		add(_camLabel, BorderLayout.NORTH);
 		

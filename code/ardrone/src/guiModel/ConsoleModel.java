@@ -1,6 +1,7 @@
 package guiModel;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,6 +13,8 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Observable;
 
 public class ConsoleModel extends Observable{
@@ -37,11 +40,16 @@ public class ConsoleModel extends Observable{
 	}
 	
 	public void writeInFile(String txt){
+		Calendar cal = Calendar.getInstance();
+    	cal.getTime();
+    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	String time = sdf.format(cal.getTime());
+    	
 		FileWriter fw;
 		try {
 			fw = new FileWriter(LOG_PATH);
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(getText()+txt);
+			bw.write(getText() + time +"> " + txt);
 			bw.close();
 		} 
 		catch (IOException e) {
@@ -72,13 +80,15 @@ public class ConsoleModel extends Observable{
 	public class WatchingLog extends Thread{
 		public void run(){
 			try {
-				final Path path = FileSystems.getDefault().getPath("", "");
+				final Path path = FileSystems.getDefault().getPath(new File( "." ).getCanonicalPath(), "");
+				System.out.println(path);
 				final WatchService watchService = FileSystems.getDefault().newWatchService();
 				path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 				while (true) {
 				    WatchKey wk;
 					try {
 						wk = watchService.take();
+
 						for (WatchEvent<?> event : wk.pollEvents()) {
 					        //we only register "ENTRY_MODIFY" so the context is always a Path.
 					        final Path changed = (Path) event.context();
@@ -100,8 +110,8 @@ public class ConsoleModel extends Observable{
 					    					currentLine++;
 					    					if(currentLine == lastLine){
 					    						addText(s);
-					    						// ERROR THERE
-					    						System.out.println(s);
+					    						System.out
+														.println("Done reading !");
 					    						break;
 					    					}
 					    				}
@@ -122,7 +132,6 @@ public class ConsoleModel extends Observable{
 					        System.out.println("Key has been unregisterede");
 					    }
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

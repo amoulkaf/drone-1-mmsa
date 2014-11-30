@@ -1,5 +1,7 @@
 package PartieANOUARetANAS;
 
+import guiModel.ConsoleModel;
+
 public class DroneStateContext {
 	private IDroneState _currentState;
 	private GroundState _ground;
@@ -11,15 +13,18 @@ public class DroneStateContext {
 	public final static boolean INDOOR = true;
 	public final static boolean OUTDOOR = false;
 
+	private ConsoleModel _consoleModel;
+	
 	// changement d etat -> outdoorState purement manuel
 
-	public DroneStateContext(Controller controller) {
+	public DroneStateContext(Controller controller, ConsoleModel consoleModel) {
 		_airOutDoor = new OutDoorState();
 		_ground = new GroundState();
 		_airInDoor = new AirState();
 		_currentState = _ground;
 		_controller = controller;
 		state = INDOOR;
+		_consoleModel = consoleModel;
 	}
 
 	// avancer
@@ -88,18 +93,19 @@ public class DroneStateContext {
 	// Flip en arriere
 	public void backFlip() {
 		_currentState.backFlip(_controller);
-
+		_consoleModel.writeInFile("Nice backflip !");
 	}
 
 	// Flip a gauche
 	public void leftFlip() {
 		_currentState.leftFlip(_controller);
-
+		_consoleModel.writeInFile("Leftflip is awesome!");
 	}
 
 	// Flip a droit
 	public void rightFlip() {
 		_currentState.rightFlip(_controller);
+		_consoleModel.writeInFile("Would you try double rightflip ?");
 	}
 
 	// Switch state to OutDoor/InDoor
@@ -108,11 +114,13 @@ public class DroneStateContext {
 			state = OUTDOOR;
 			_currentState = _airOutDoor;
 			System.out.println("State changed to OUTDOOR\n");
+			_consoleModel.writeInFile("State changed to : Outdoor.");
 		}
 		else{
 			state = INDOOR;
 			_currentState = _airInDoor;
 			System.out.println("State changed to INDOOR\n");
+			_consoleModel.writeInFile("State changed to : Indoor.");
 		}
 	}
 
