@@ -50,34 +50,29 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		_camModel.addObserver(this);
 		
 		this.setLayout(new BorderLayout());
-		System.out.print(System.getProperty("java.library.path"));
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+		//System.out.print(System.getProperty("java.library.path"));
+		//System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
 		//System.loadLibrary("opencv-248");
-	/*	Mat mat_stream = new Mat();
-		VideoCapture capture = new VideoCapture("tcp://192.168.1.1:5555");
+		nu.pattern.OpenCV.loadLibrary();
+		Mat mat_stream = new Mat();
+		VideoCapture capture = new VideoCapture(0);
 		
 		if(capture.isOpened()){
 			while(true){
 				capture.read(mat_stream);
 				if( !mat_stream.empty()){
 					this.setSize(mat_stream.width()+40,mat_stream.height()+60);
-					mtbi.setMatrix(mat_stream, ".png");
-					_camImgTmp = mtbi.getBufferedImage();
+					_camImgTmp = MatToBufImg.MatToBufferedImage(mat_stream);
 					_camImgNew = _camImgTmp;
 					this.repaint();
 					
 				}
 			}
-			
-			
 		}
-				
-				
-		*/
 		
 		//<TEST>
-		
+		/*
 		try {
 			_camImgTmp =  ImageIO.read(new File("../../doc/IHM/ihm.png"));
 		}
@@ -87,10 +82,11 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		//</TEST>
 		
 		_camImgNew = new BufferedImage(WIDTHIMG, HEIGHTIMG, BufferedImage.TYPE_INT_RGB);
+		
 		Graphics g = _camImgNew.createGraphics();
 		g.drawImage(_camImgTmp, 0, 0, WIDTHIMG, HEIGHTIMG, null);
 		g.dispose();
-		
+		*/
 		_camLabel = new JLabel(new ImageIcon(_camImgNew));		
 		add(_camLabel, BorderLayout.NORTH);
 		
