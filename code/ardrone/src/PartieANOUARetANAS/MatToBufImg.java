@@ -10,7 +10,7 @@ import org.opencv.highgui.Highgui;
 
 
 public class MatToBufImg {
-	Mat _matrix;
+/*	Mat _matrix;
 	MatOfByte _mob;
 	String _fileExtern;
 	
@@ -41,5 +41,38 @@ public class MatToBufImg {
 		}
 		return bufImage;
 	}	
+*/
+	
+	public static BufferedImage MatToBufferedImage(Mat matrix) {  
+        long startTime = System.nanoTime();  
+        int cols = matrix.cols();  
+        int rows = matrix.rows();  
+        int elemSize = (int)matrix.elemSize();  
+        byte[] data = new byte[cols * rows * elemSize];  
+        int type;  
+        matrix.get(0, 0, data);  
+        switch (matrix.channels()) {  
+          case 1:  
+            type = BufferedImage.TYPE_BYTE_GRAY;  
+            break;  
+          case 3:   
+            type = BufferedImage.TYPE_3BYTE_BGR;  
+            // bgr to rgb  
+            byte b;  
+            for(int i=0; i<data.length; i=i+3) {  
+              b = data[i];  
+              data[i] = data[i+2];  
+              data[i+2] = b;  
+            }  
+            break;  
+          default:  
+            return null; // Error  
+        }  
+        BufferedImage image = new BufferedImage(cols, rows, type);  
+        image.getRaster().setDataElements(0, 0, cols, rows, data);  
+        long endTime = System.nanoTime();  
+        System.out.println(String.format("Elapsed time: %.2f ms", (float)(endTime - startTime)/1000000));  
+        return image; // Successful  
+	}  
 }
 
