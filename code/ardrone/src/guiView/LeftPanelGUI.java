@@ -37,15 +37,15 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	
 	private String _cameraView; 
 	private JLabel _camLabel;
-	private BufferedImage _camImgTmp;
 	private BufferedImage _camImgNew;
 	private CameraModel _camModel;
 	
+	private VideoCapture _capture;
+	private Mat _mat_stream;
+	
 	public LeftPanelGUI(){
 		_cameraView = FRONTAL;
-		_camImgTmp = null;
 		_camModel = new CameraModel();
-		MatToBufImg  mtbi = new MatToBufImg();
 		
 		_camModel.addObserver(this);
 		
@@ -55,20 +55,15 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		
 		//System.loadLibrary("opencv-248");
 		nu.pattern.OpenCV.loadLibrary();
-		Mat mat_stream = new Mat();
-		VideoCapture capture = new VideoCapture(0);
-		
-		if(capture.isOpened()){
-			while(true){
-				capture.read(mat_stream);
-				if( !mat_stream.empty()){
-					this.setSize(mat_stream.width()+40,mat_stream.height()+60);
-					_camImgTmp = MatToBufImg.MatToBufferedImage(mat_stream);
-					_camImgNew = _camImgTmp;
-					this.repaint();
-					
-				}
-			}
+		_mat_stream = new Mat();
+		_capture = new VideoCapture(0);
+		ShowImage a = new ShowImage(this);
+		a.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		//<TEST>
@@ -87,7 +82,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		g.drawImage(_camImgTmp, 0, 0, WIDTHIMG, HEIGHTIMG, null);
 		g.dispose();
 		*/
-		_camLabel = new JLabel(new ImageIcon(_camImgNew));		
+		_camLabel = new JLabel();		
 		add(_camLabel, BorderLayout.NORTH);
 		
 		JButton changeCameraButton = new JButton("Changer de camera");
@@ -109,6 +104,31 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	
 	@Override
 	public void paintComponent(Graphics g){
-		g.drawImage(_camImgNew,10,10,_camImgNew.getWidth(),_camImgNew.getHeight(),this);
+		g.drawImage(_camImgNew,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
 	}
+	
+	class ShowImage extends Thread{
+		LeftPanelGUI panel;
+		private BufferedImage _camImgTmp;
+		
+		public ShowImage(LeftPanelGUI panel){
+			this.panel = panel;
+			_camImgNew = null;
+		}
+		
+		@Override
+		public void run(){
+			if(_capture.isOpened()){
+				while(true){
+					_capture.read(_mat_stream);
+					if( !_mat_stream.empty()){
+						panel.setSize(_mat_stream.width(),_mat_stream.height());
+						_camImgTmp = MatToBufImg.MatToBufferedImage(_mat_stream);
+						_camImgNew = _camImgTmp;
+						panel.repaint();
+					}
+				}
+			}
+		}
+	}	
 }

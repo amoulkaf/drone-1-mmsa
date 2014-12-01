@@ -59,27 +59,7 @@ public class Camera extends Thread {
 	private MatToBufImg _matToBufferedImageConverter;
 	
 	public void videoStartCaptur(){
-	
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
-		
-		_matToBufferedImageConverter = new MatToBufImg();
-	    
-		VideoCapture capture = new VideoCapture();
-	    capture.open("tcp://192.168.1.1:5555");
-	    
-	    if(!capture.isOpened()){
-	    	System.out.println("faileu");
-	    } else {
-	    	Mat frame = new Mat();
-	    	while(true){
-	    		if(capture.read(frame)){
-	    			
-	    		}
-	    	}
-	    }
-	   
-
-	    /*
+		/*
 	    IplImage frame;
 	    public void Capturing() {  
 	    capture = new Vide
