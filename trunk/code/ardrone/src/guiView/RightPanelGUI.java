@@ -31,7 +31,7 @@ public class RightPanelGUI extends JPanel implements Observer{
 	 * ADD A JSCROLLPANE FOR DISPLAYING LOGS
 	 *
 	*/
-	public RightPanelGUI(ConsoleModel model){
+	public RightPanelGUI(KeyboardDrone k,ConsoleModel model){
 		this.setLayout(new BorderLayout());
 		
 		_takeControl = new JButton("Prendre le controle du robot");
@@ -49,18 +49,18 @@ public class RightPanelGUI extends JPanel implements Observer{
 		/*
 		 * Situation reelle : decommenter ci-dessous et commenter ligne juste apres
 		 * */
+		
 		/*
 		Controller controller;
-		try {
-			controller = new Controller("192.168.1.1", 5556, "127.0.0.1", 7000, model);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
+		try{
+		controller = new Controller("192.168.1.1", 5556, "127.0.0.1", 7000, model);
+		} catch (InterruptedException e1){
 			e1.printStackTrace();
 		}
-		//KeyboardDrone keyboard = new KeyboardDrone(controller, model);
+		KeyboardDrone keyboard = new KeyboardDrone(controller, model);
 		*/
-		KeyboardDrone keyboard = new KeyboardDrone(null, model);
-		_consoleText.addKeyListener(keyboard);
+		//KeyboardDrone keyboard = new KeyboardDrone(null, model);
+		_consoleText.addKeyListener(k);
 		//<TEST>
 		//_consoleModel.addText("ceci est un test");
 		//</TEST>

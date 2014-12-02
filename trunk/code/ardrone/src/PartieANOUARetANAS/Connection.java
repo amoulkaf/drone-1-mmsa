@@ -55,7 +55,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 	System.out.println("Initialisation serveur\n");
-	_consoleModel.writeInFile("Initializing server.");
+	//_consoleModel.writeInFile("Initializing server.");
 	}
 
 	// initialise le socket
@@ -66,7 +66,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 		System.out.println("Initialisation socket\n");
-		_consoleModel.writeInFile("Initializing socket.");
+		//_consoleModel.writeInFile("Initializing socket.");
 	}
 
 	public void sendMessage(String message){
@@ -79,7 +79,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 		 System.out.println("send message \n");
-		 _consoleModel.writeInFile("Message sent.");
+		 //_consoleModel.writeInFile("Message sent.");
 	}
 	
 }

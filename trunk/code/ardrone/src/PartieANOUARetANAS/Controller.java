@@ -1,14 +1,7 @@
 package PartieANOUARetANAS;
 
-// GEOFFREY:13-10-14:
-//	ce import ne sert a rien
-//	il essaie d'importer le package Convert qui n'existe pas
-//import Convert;
-
 import guiModel.ConsoleModel;
 
-import java.io.*;
-import java.net.*;
 
 public class Controller {
 	private Connection _connection, _connectionFake;
@@ -97,5 +90,8 @@ public class Controller {
 		Thread.sleep(250);
 		sendMessage(Commands.check(_connection.getSeq()));
 		_consoleModel.writeInFile("[OK] UAV is now initialized.");
+		
+		
+		System.out.println("Dodo terminé, on envoie la sauce !");
 	}
 }
