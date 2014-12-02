@@ -23,6 +23,8 @@ import org.opencv.highgui.Highgui;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
+import PartieANOUARetANAS.Commands;
+import PartieANOUARetANAS.Controller;
 import PartieANOUARetANAS.MatToBufImg;
 
 //import PartieANOUARetANAS.MatToBufImg; //j'ai mis le MatToBufImg dans ton Pakage guiView, 
@@ -30,12 +32,12 @@ import PartieANOUARetANAS.MatToBufImg;
     
 
 public class LeftPanelGUI extends JPanel implements Observer{
-	private static final String FRONTAL 	= "frontal";
-	private static final String VERTICAL 	= "vertical";
-	private static final int WIDTHIMG 		= 500;
-	private static final int HEIGHTIMG 		= 500;
+//	private static final String FRONTAL 	= "frontal";
+//	private static final String VERTICAL 	= "vertical";
+//	private static final int WIDTHIMG 		= 500;
+//	private static final int HEIGHTIMG 		= 500;
 	
-	private String _cameraView; 
+//	private String _cameraView; 
 	private JLabel _camLabel;
 	private BufferedImage _camImgNew;
 	private CameraModel _camModel;
@@ -43,27 +45,61 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	private VideoCapture _capture;
 	private Mat _mat_stream;
 	
-	public LeftPanelGUI(){
-		_cameraView = FRONTAL;
+	public LeftPanelGUI(Controller controller){
+	//	_cameraView = FRONTAL;
 		_camModel = new CameraModel();
 		
 		_camModel.addObserver(this);
 		
 		this.setLayout(new BorderLayout());
-		//System.out.print(System.getProperty("java.library.path"));
-		//System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		
-		//System.loadLibrary("opencv-248");
 		nu.pattern.OpenCV.loadLibrary();
 		_mat_stream = new Mat();
-		_capture = new VideoCapture(0);
-		ShowImage a = new ShowImage(this);
-		a.start();
+		
+		// pour initialiser le codec
+		String message;
+		message = Commands.configIDS(controller.getSeq());
+		controller.sendMessage(message);
+		message = Commands.configCodec(controller.getSeq());
+		controller.sendMessage(message);
+		
+		System.out.println("Fin d'initialisation, going to sleep 1sec");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String message1;
+			
+		//message1 = Commands.configIDS(controller.getSeq());
+		//controller.sendMessage(message1);
+		
+		message1 = Commands.configCameraVertical(controller.getSeq());
+		controller.sendMessage(message1);
+		//_context.takeOff();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		// ERREUR ICI 
+		_capture = new VideoCapture("tcp://192.168.1.1:5555");	
+		if(_capture == null){
+			System.out.println("do not work");
+		} 
+		else {
+			ShowImage a = new ShowImage(this);
+			a.start();
+			try {
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 		}
 		
 		//<TEST>
@@ -77,10 +113,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		//</TEST>
 		
 		_camImgNew = new BufferedImage(WIDTHIMG, HEIGHTIMG, BufferedImage.TYPE_INT_RGB);
-		
-		Graphics g = _camImgNew.createGraphics();
-		g.drawImage(_camImgTmp, 0, 0, WIDTHIMG, HEIGHTIMG, null);
-		g.dispose();
+
 		*/
 		_camLabel = new JLabel();		
 		add(_camLabel, BorderLayout.NORTH);
@@ -89,6 +122,8 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		changeCameraButton.setToolTipText("Changer la camera du drone");
 		changeCameraButton.addMouseListener(new CameraListener(_camModel));
 		this.add(changeCameraButton, BorderLayout.SOUTH);
+		
+		}
 	}
 
 	public void update(Observable o, Object arg) {
@@ -118,6 +153,13 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		
 		@Override
 		public void run(){
+			
+				if(_capture == null){
+					System.out.println("do not work");
+				}else {
+					System.out.println("");
+				}
+				_capture.open("192.168.1.1:5555");
 			if(_capture.isOpened()){
 				while(true){
 					_capture.read(_mat_stream);

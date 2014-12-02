@@ -25,6 +25,7 @@ public class GroundState implements IDroneState {
 	// Decoller
 	public void takeOff(Controller controller) {
 		//String message = Commands.takeOff(controller.getSeq());
+		/*
 		String message;
 		
 		message = Commands.configIDS(controller.getSeq());
@@ -39,6 +40,8 @@ public class GroundState implements IDroneState {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		*/
+		String message;
 		while(true){
 			
 			message = Commands.configIDS(controller.getSeq());
