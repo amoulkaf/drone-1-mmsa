@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.highgui.Highgui;
+//import org.opencv.core.Mat;
+//import org.opencv.core.MatOfByte;
+//import org.opencv.highgui.Highgui;
 
 
 public class MatToBufImg {
@@ -42,7 +42,7 @@ public class MatToBufImg {
 		return bufImage;
 	}	
 */
-	
+	/*
 	public static BufferedImage MatToBufferedImage(Mat matrix) {  
         long startTime = System.nanoTime();  
         int cols = matrix.cols();  
@@ -73,6 +73,7 @@ public class MatToBufImg {
         long endTime = System.nanoTime();  
         System.out.println(String.format("Elapsed time: %.2f ms", (float)(endTime - startTime)/1000000));  
         return image; // Successful  
-	}  
+	} 
+	*/ 
 }
 

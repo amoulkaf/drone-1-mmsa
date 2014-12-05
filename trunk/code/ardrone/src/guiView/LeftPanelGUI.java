@@ -18,11 +18,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.Highgui;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.swresample;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber.Exception;
 
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
+import static org.bytedeco.javacpp.opencv_highgui.*;
 import PartieANOUARetANAS.Commands;
 import PartieANOUARetANAS.Controller;
 import PartieANOUARetANAS.MatToBufImg;
@@ -41,9 +44,9 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	private JLabel _camLabel;
 	private BufferedImage _camImgNew;
 	private CameraModel _camModel;
-	
-	private VideoCapture _capture;
-	private Mat _mat_stream;
+	private FFmpegFrameGrabber _ffg;
+	//private VideoCapture _capture;
+	//private Mat _mat_stream;
 	
 	public LeftPanelGUI(Controller controller){
 	//	_cameraView = FRONTAL;
@@ -53,8 +56,8 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		
 		this.setLayout(new BorderLayout());
 		
-		nu.pattern.OpenCV.loadLibrary();
-		_mat_stream = new Mat();
+		//nu.pattern.OpenCV.loadLibrary();
+		//_mat_stream = new Mat();
 		
 		// pour initialiser le codec
 		String message;
@@ -86,7 +89,32 @@ public class LeftPanelGUI extends JPanel implements Observer{
 			e.printStackTrace();
 		}
 		
-		// ERREUR ICI 
+		//Test with Javacv + FFmpeg
+		Loader.load(swresample.class);
+		
+		_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
+		System.out.println("banana");
+
+		try {
+			_ffg.start();
+			System.out.println("poire");
+			ShowImage a = new ShowImage(this);
+			a.start();
+			try {
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e) {				
+				e.printStackTrace();
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			System.out.println("chocolat");
+			e1.printStackTrace();
+			System.out.println("vanille");
+		}
+		
+		// ERREUR ICI (opencv not to chaud)
+		/*
 		_capture = new VideoCapture("tcp://192.168.1.1:5555");	
 		if(_capture == null){
 			System.out.println("do not work");
@@ -101,7 +129,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
-		
+		*/
 		//<TEST>
 		/*
 		try {
@@ -116,15 +144,14 @@ public class LeftPanelGUI extends JPanel implements Observer{
 
 		*/
 		_camLabel = new JLabel();		
-		add(_camLabel, BorderLayout.NORTH);
+		this.add(_camLabel, BorderLayout.NORTH);
 		
 		JButton changeCameraButton = new JButton("Changer de camera");
 		changeCameraButton.setToolTipText("Changer la camera du drone");
 		changeCameraButton.addMouseListener(new CameraListener(_camModel));
-		this.add(changeCameraButton, BorderLayout.SOUTH);
-		
-		}
+		this.add(changeCameraButton, BorderLayout.SOUTH);		
 	}
+	
 
 	public void update(Observable o, Object arg) {
 		if (_camModel.isFrontCamera()){
@@ -153,22 +180,21 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		
 		@Override
 		public void run(){
-			
-				if(_capture == null){
-					System.out.println("do not work");
-				}else {
-					System.out.println("");
-				}
-				_capture.open("192.168.1.1:5555");
-			if(_capture.isOpened()){
-				while(true){
-					_capture.read(_mat_stream);
-					if( !_mat_stream.empty()){
-						panel.setSize(_mat_stream.width(),_mat_stream.height());
-						_camImgTmp = MatToBufImg.MatToBufferedImage(_mat_stream);
-						_camImgNew = _camImgTmp;
-						panel.repaint();
+			int i = 0;
+			while(true){
+				try {
+					System.out.println(++i);
+					if (i==60){
+						_ffg.restart();
 					}
+					_camImgTmp = _ffg.grab().getBufferedImage();
+					
+					_camImgNew = _camImgTmp;
+
+					panel.setSize(640, 360);
+					panel.repaint();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}

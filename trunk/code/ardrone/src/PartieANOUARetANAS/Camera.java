@@ -3,10 +3,10 @@ package PartieANOUARetANAS;
 import java.io.*;
 import java.net.*;
 
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.Highgui;
+//import org.opencv.core.Core;
+//import org.opencv.core.Mat;
+//import org.opencv.highgui.VideoCapture;
+//import org.opencv.highgui.Highgui;
 
 public class Camera extends Thread {
 	/*

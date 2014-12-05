@@ -2,9 +2,29 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv"/>
-	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="libs/httpclient-4.3.3.jar"/>
-	<classpathentry kind="lib" path="libs/httpcore-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/artoolkitplus.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/artoolkitplus-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/artoolkitplus-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/ffmpeg.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/ffmpeg-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/ffmpeg-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/flycapture.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/flycapture-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/flycapture-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/httpclient-4.3.3.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/httpcore-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/javacpp.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/javacv.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libdc1394.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libdc1394-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libdc1394-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libfreenect.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libfreenect-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/libfreenect-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/opencv.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/opencv-linux-x86.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/opencv-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/atroncy/DRONEZZZZzzZZ/drone-1-mmsa/code/ardrone/libs/videoinput.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
