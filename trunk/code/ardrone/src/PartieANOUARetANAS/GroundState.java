@@ -24,39 +24,9 @@ public class GroundState implements IDroneState {
 
 	// Decoller
 	public void takeOff(Controller controller) {
-		//String message = Commands.takeOff(controller.getSeq());
-		/*
-		String message;
-		
-		message = Commands.configIDS(controller.getSeq());
-		controller.sendMessage(message);
-		
-		message = Commands.configCodec(controller.getSeq());
-		controller.sendMessage(message);
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		*/
-		String message;
-		while(true){
-			
-			message = Commands.configIDS(controller.getSeq());
-			controller.sendMessage(message);
-			
-			message = Commands.configCameraVertical(controller.getSeq());
-			controller.sendMessage(message);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		System.out.println("UAV is taking off ");
+		String message = Commands.takeOff(controller.getSeq());
+		controller.sendMessage(message);		
 	}
 
 	// Atterir
@@ -95,19 +65,16 @@ public class GroundState implements IDroneState {
 
 	// Flip en arriere
 	public void backFlip(Controller controller) {
-
 		System.out.println("Warning : Drone on the groud.\n");
 	}
 
 	// Flip a gauche
 	public void leftFlip(Controller controller) {
-
 		System.out.println("Warning : Drone on the groud.\n");
 	}
 
 	// Flip a droit
 	public void rightFlip(Controller controller) {
-
 		System.out.println("Warning : Drone on the groud.\n");
 	}
 

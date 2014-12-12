@@ -19,6 +19,7 @@ public class MainWindowGUI extends JFrame{
 		this.setTitle(TITLE);
 		this.setSize(WIDTH,HEIGHT);
 		this.setLocationRelativeTo(null);
+		this.setSize(800,600);
 
 		this.setLayout(new FlowLayout());
 		LeftPanelGUI leftPanel = new LeftPanelGUI(controller);

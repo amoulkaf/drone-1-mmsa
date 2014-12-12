@@ -1,7 +1,6 @@
 package guiListener;
 
 import guiModel.CameraModel;
-import guiView.LeftPanelGUI;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,9 +14,7 @@ public class CameraListener implements MouseListener{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("[ChangeCameraListener] Mouse clicked");
-		//Envoyer ici l'info au drone pour changer de camera
-		//	.... TODO
+		System.out.println("[ChangeCameraListener] Button clicked");
 		_camModel.changeCamera();
 	}
 	public void mousePressed(MouseEvent e) {}

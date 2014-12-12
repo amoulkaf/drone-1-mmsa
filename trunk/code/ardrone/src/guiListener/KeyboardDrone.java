@@ -9,28 +9,28 @@ import PartieANOUARetANAS.Controller;
 import PartieANOUARetANAS.DroneStateContext;
 
 /*
- Manuel d'utilisation:
+Manuel d'utilisation:
 
- FLECHE HAUT : avancer
- FLECHE BAS : reculer
- FLECHE DROITE : deplacement horizontal a droite
- FLECHE GAUCHE : deplacement horizontal a gauche
- ESPACE : decoller
- CTRL : atterir
- D : pivoter a droite
- Q : pivoter a gauche
- S : descendre
- Z : monter
- SHIFT : calibrer
- 
- ---MODE EXTERIEUR---
- ESCAPE : passer en mode exterieur
- O : flip en avant
- L : flip en arriere
- K : flip a gauche
- M : flip a droit
- 
- */
+FLECHE HAUT : avancer
+FLECHE BAS : reculer
+FLECHE DROITE : deplacement horizontal a droite
+FLECHE GAUCHE : deplacement horizontal a gauche
+ESPACE : decoller
+CTRL : atterir
+D : pivoter a droite
+Q : pivoter a gauche
+S : descendre
+Z : monter
+SHIFT : calibrer
+
+---MODE EXTERIEUR---
+ESCAPE : passer en mode exterieur
+O : flip en avant
+L : flip en arriere
+K : flip a gauche
+M : flip a droit
+
+*/
 
 //for ar-drone
 public class KeyboardDrone implements KeyListener {

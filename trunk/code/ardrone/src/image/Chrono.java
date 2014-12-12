@@ -1,3 +1,4 @@
+package image;
 // got on http://codes-sources.commentcamarche.net/source/20015-calculer-le-temps-d-execution-d-une-tache
 
 import java.util.Calendar;
