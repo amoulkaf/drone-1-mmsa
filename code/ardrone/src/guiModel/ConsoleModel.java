@@ -88,9 +88,7 @@ public class ConsoleModel extends Observable{
 				    WatchKey wk;
 					try {
 						wk = watchService.take();
-
 						for (WatchEvent<?> event : wk.pollEvents()) {
-					        //we only register "ENTRY_MODIFY" so the context is always a Path.
 					        final Path changed = (Path) event.context();
 					        if (changed.endsWith(LOG_PATH)) {
 					            try {
@@ -110,8 +108,6 @@ public class ConsoleModel extends Observable{
 					    					currentLine++;
 					    					if(currentLine == lastLine){
 					    						addText(s);
-					    						System.out
-														.println("Done reading !");
 					    						break;
 					    					}
 					    				}

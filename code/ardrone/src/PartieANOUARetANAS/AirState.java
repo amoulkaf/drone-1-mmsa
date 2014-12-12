@@ -69,26 +69,22 @@ public class AirState implements IDroneState {
 	}
 
 	// Flip en avant
-
 	public void frontFlip(Controller controller) {
 		System.out.println("Command cannot be called indoor\n");
 	}
 
 	// Flip en arriere
 	public void backFlip(Controller controller) {
-
 		System.out.println("Command cannot be called indoor\n");
 	}
 
 	// Flip a gauche
 	public void leftFlip(Controller controller) {
-
 		System.out.println("Command cannot be called indoor\n");
 	}
 
 	// Flip a droit
 	public void rightFlip(Controller controller) {
-
 		System.out.println("Command cannot be called indoor\n");
 	}
 

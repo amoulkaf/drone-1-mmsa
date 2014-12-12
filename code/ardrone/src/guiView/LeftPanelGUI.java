@@ -2,6 +2,7 @@ package guiView;
 
 import guiListener.CameraListener;
 import guiModel.CameraModel;
+import image.ImageOperation;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -30,173 +31,179 @@ import PartieANOUARetANAS.Commands;
 import PartieANOUARetANAS.Controller;
 import PartieANOUARetANAS.MatToBufImg;
 
-//import PartieANOUARetANAS.MatToBufImg; //j'ai mis le MatToBufImg dans ton Pakage guiView, 
-//pour ne pas créer de conflit c'est provisoir, j'arrange ça lundi car on a les fichiers au cremi
-    
 
 public class LeftPanelGUI extends JPanel implements Observer{
-//	private static final String FRONTAL 	= "frontal";
-//	private static final String VERTICAL 	= "vertical";
-//	private static final int WIDTHIMG 		= 500;
-//	private static final int HEIGHTIMG 		= 500;
-	
-//	private String _cameraView; 
 	private JLabel _camLabel;
 	private BufferedImage _camImgNew;
 	private CameraModel _camModel;
 	private FFmpegFrameGrabber _ffg;
-	//private VideoCapture _capture;
-	//private Mat _mat_stream;
+	private Controller _controller;
+	private ShowImage _showImage;
 	
 	public LeftPanelGUI(Controller controller){
-	//	_cameraView = FRONTAL;
+		_controller = controller;
 		_camModel = new CameraModel();
 		
 		_camModel.addObserver(this);
 		
 		this.setLayout(new BorderLayout());
-		
-		//nu.pattern.OpenCV.loadLibrary();
-		//_mat_stream = new Mat();
-		
+		this.setSize(640, 360);
+
 		// pour initialiser le codec
 		String message;
-		message = Commands.configIDS(controller.getSeq());
-		controller.sendMessage(message);
-		message = Commands.configCodec(controller.getSeq());
-		controller.sendMessage(message);
+		message = Commands.configIDS(_controller.getSeq());
+		_controller.sendMessage(message);
+		message = Commands.configCodec(_controller.getSeq());
+		_controller.sendMessage(message);
 		
-		System.out.println("Fin d'initialisation, going to sleep 1sec");
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		
-		String message1;
+		}	
 			
-		//message1 = Commands.configIDS(controller.getSeq());
-		//controller.sendMessage(message1);
+		message = Commands.configIDS(_controller.getSeq());
+		_controller.sendMessage(message);
 		
-		message1 = Commands.configCameraVertical(controller.getSeq());
-		controller.sendMessage(message1);
-		//_context.takeOff();
+		message = Commands.configCameraVertical(_controller.getSeq());
+		_controller.sendMessage(message);
+		_camModel.setFrontCamera(false);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//Test with Javacv + FFmpeg
 		Loader.load(swresample.class);
 		
 		_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
-		System.out.println("banana");
 
 		try {
+			System.out.println("1");
 			_ffg.start();
-			System.out.println("poire");
-			ShowImage a = new ShowImage(this);
-			a.start();
+			System.out.println("2");
+			
 			try {
 				Thread.sleep(1000);
 			} 
 			catch (InterruptedException e) {				
 				e.printStackTrace();
 			}
+			_showImage = new ShowImage(this);
+			_showImage.start();
+			_camModel.addObserver(_showImage);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			System.out.println("chocolat");
 			e1.printStackTrace();
-			System.out.println("vanille");
 		}
 		
-		// ERREUR ICI (opencv not to chaud)
-		/*
-		_capture = new VideoCapture("tcp://192.168.1.1:5555");	
-		if(_capture == null){
-			System.out.println("do not work");
-		} 
-		else {
-			ShowImage a = new ShowImage(this);
-			a.start();
-			try {
-				Thread.sleep(1000);
-			} 
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		}
-		*/
-		//<TEST>
-		/*
+		BufferedImage img=null;
 		try {
-			_camImgTmp =  ImageIO.read(new File("../../doc/IHM/ihm.png"));
+			img = ImageIO.read(new File("../../doc/IHM/ihm.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch(IOException e){
-			System.err.println("File doesn't exist.");
-		}
-		//</TEST>
-		
-		_camImgNew = new BufferedImage(WIDTHIMG, HEIGHTIMG, BufferedImage.TYPE_INT_RGB);
-
-		*/
-		_camLabel = new JLabel();		
+		ImageIcon icon = new ImageIcon(img);
+		_camLabel = new JLabel(icon);
 		this.add(_camLabel, BorderLayout.NORTH);
 		
 		JButton changeCameraButton = new JButton("Changer de camera");
 		changeCameraButton.setToolTipText("Changer la camera du drone");
 		changeCameraButton.addMouseListener(new CameraListener(_camModel));
-		this.add(changeCameraButton, BorderLayout.SOUTH);		
+		this.add(changeCameraButton, BorderLayout.SOUTH);	
+		System.out.println("[LPGUI] Left Panel GUI ok ");
 	}
 	
 
 	public void update(Observable o, Object arg) {
+		String message;
+		message = Commands.configIDS(_controller.getSeq());
+		_controller.sendMessage(message);
+
 		if (_camModel.isFrontCamera()){
-			System.out.println("[LeftPaneGUI] Afficher ici la cam frontale");
-			// TODO
+			message = Commands.configCameraVertical(_controller.getSeq());
 		}
 		else{
-			System.out.println("[LeftPaneGUI] Afficher ici la cam verticale");
-			// TODO
+			message = Commands.configCameraHorizontal(_controller.getSeq());
 		}
+		_controller.sendMessage(message);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g){
-		g.drawImage(_camImgNew,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
+		ImageIcon icon = new ImageIcon(_camImgNew);
+		_camLabel = new JLabel(icon);
+		this.remove(_camLabel);
+		this.add(_camLabel, BorderLayout.NORTH);
+		System.out.println("okookko k ok ok okok");
+		//g.drawImage(img,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
 	}
 	
-	class ShowImage extends Thread{
-		LeftPanelGUI panel;
-		private BufferedImage _camImgTmp;
+	class ShowImage extends Thread implements Observer{
+		private LeftPanelGUI _panel;
+		private boolean _changed;
 		
 		public ShowImage(LeftPanelGUI panel){
-			this.panel = panel;
+			_panel = panel;
 			_camImgNew = null;
+			_changed = false;
 		}
 		
-		@Override
 		public void run(){
 			int i = 0;
 			while(true){
-				try {
-					System.out.println(++i);
-					if (i==60){
-						_ffg.restart();
+				try {	
+					if(_changed){
+						System.out.println("On sleep ici");
+						try {
+							this.sleep(1000);
+							_changed = false;
+							_ffg.stop();
+							_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
+							_ffg.start();
+							this.sleep(1000);
+							i=0;
+						} 
+						catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
-					_camImgTmp = _ffg.grab().getBufferedImage();
 					
-					_camImgNew = _camImgTmp;
-
-					panel.setSize(640, 360);
-					panel.repaint();
+					++i;
+					//Horizontal : 60fps
+					if (_camModel.isFrontCamera()){
+						if (i==60){
+							_ffg.restart();
+						}
+					}
+					//Vertical : 40 fps
+					else{
+						if (i==40){
+							_ffg.restart();
+						}	
+					}
+					
+					_camImgNew = _ffg.grab().getBufferedImage();
+					
+					//toutes les 60 images (toutes les secondes), on calcule
+					if (i%40 == 0){
+						ImageOperation img = new ImageOperation();
+						if(img.detectRobot(_camImgNew)){
+							// TODO : essaie de connexion avec le robot
+						}
+					}
+					_panel.setSize(640,360);
+					_panel.repaint();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+		}
+
+		@Override
+		public void update(Observable o, Object arg) {
+			System.out.println("[LeftPanelGUI] okokoko");
+			_changed = true;
 		}
 	}	
 }

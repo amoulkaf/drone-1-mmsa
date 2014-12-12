@@ -21,6 +21,10 @@ public class CameraModel extends Observable {
 		notifyObservers();
 	}
 	
+	public void setFrontCamera(boolean b){
+		_isFrontCamera = b;
+	}
+	
 	public boolean isFrontCamera(){
 		return _isFrontCamera;
 	}

@@ -10,7 +10,7 @@ public class HttpClientArduino {
     public static void sendGet(String order) throws Exception {
         
 	HttpClient client = new DefaultHttpClient();
-	HttpGet request = new HttpGet("http://192.168.0.1/?%24=" + order);
+	HttpGet request = new HttpGet("http://192.168.1.3/?%24=" + order);
  
 	HttpResponse response = client.execute(request);
  
