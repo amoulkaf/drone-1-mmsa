@@ -1,21 +1,15 @@
 package guiView;
 
-import guiListener.CameraListener;
 import guiModel.CameraModel;
+import guiModel.ConsoleModel;
 import image.ImageOperation;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -24,12 +18,10 @@ import org.bytedeco.javacpp.swresample;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
 
-import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_imgproc.*;
-import static org.bytedeco.javacpp.opencv_highgui.*;
+import robot.HttpClientArduino;
+import robot.RobotControll;
 import PartieANOUARetANAS.Commands;
 import PartieANOUARetANAS.Controller;
-import PartieANOUARetANAS.MatToBufImg;
 
 
 public class LeftPanelGUI extends JPanel implements Observer{
@@ -39,17 +31,20 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	private FFmpegFrameGrabber _ffg;
 	private Controller _controller;
 	private ShowImage _showImage;
-	private JPanel _north;
+	private RobotControll _robot;
+	private ConsoleModel _model;
 	
-	public LeftPanelGUI(Controller controller){
-	//	_north = new JPanel();
-		//north.setSize(640,360);
-		//JPanel south = new JPanel();
-
-		_controller = controller;
-		_camModel = new CameraModel();
+	public LeftPanelGUI(Controller controller, 
+						CameraModel camModel, 
+						RightPanelGUI rightPanel, 
+						RobotControll robot,
+						ConsoleModel model){
 		
+		_controller = controller;
+		_camModel = camModel;
 		_camModel.addObserver(this);
+		_robot = robot;
+		_model = model;
 		
 		this.setLayout(new BorderLayout());
 		this.setSize(640, 360);
@@ -73,6 +68,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		message = Commands.configCameraVertical(_controller.getSeq());
 		_controller.sendMessage(message);
 		_camModel.setFrontCamera(false);
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -80,7 +76,6 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		}
 		
 		Loader.load(swresample.class);
-		
 		_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
 
 		try {
@@ -94,7 +89,7 @@ public class LeftPanelGUI extends JPanel implements Observer{
 			catch (InterruptedException e) {				
 				e.printStackTrace();
 			}
-			_showImage = new ShowImage(_north);
+			_showImage = new ShowImage(this, rightPanel);
 			_showImage.start();
 			_camModel.addObserver(_showImage);
 		} catch (Exception e1) {
@@ -112,18 +107,10 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		_camLabel = new JLabel(icon);
 		this.add(_camLabel, BorderLayout.NORTH);
 		*/
-		JButton changeCameraButton = new JButton("Changer de camera");
-		changeCameraButton.setToolTipText("Changer la camera du drone");
-		changeCameraButton.addMouseListener(new CameraListener(_camModel));
 		_camLabel = new JLabel();
-		//_north.add(_camLabel);
-		//south.add(changeCameraButton);
 		
 		this.add(_camLabel,BorderLayout.NORTH);
-		this.add(changeCameraButton, BorderLayout.SOUTH);	
-		System.out.println("[LPGUI] Left Panel GUI ok ");
 	}
-	
 
 	public void update(Observable o, Object arg) {
 		String message;
@@ -131,10 +118,12 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		_controller.sendMessage(message);
 
 		if (_camModel.isFrontCamera()){
-			message = Commands.configCameraVertical(_controller.getSeq());
+			System.out.println("Camera frontale");
+			message = Commands.configCameraHorizontal(_controller.getSeq());
 		}
 		else{
-			message = Commands.configCameraHorizontal(_controller.getSeq());
+			System.out.println("Camera verticale");
+			message = Commands.configCameraVertical(_controller.getSeq());
 		}
 		_controller.sendMessage(message);
 	}
@@ -142,20 +131,20 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	@Override
 	public void paintComponent(Graphics g){
 		g.drawImage(_camImgNew,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
-		_north.remove(_camLabel);
-		this.remove(_north);
-		_north.add(_camLabel);
-		this.add(_north, BorderLayout.NORTH);
 	}
 	
 	class ShowImage extends Thread implements Observer{
-		private JPanel _panel;
+		private LeftPanelGUI _panel;
 		private boolean _changed;
+		private RightPanelGUI _rightPanel;
+		private boolean _detected;
 		
-		public ShowImage(JPanel panel){
+		public ShowImage(LeftPanelGUI panel, RightPanelGUI rightPanel){
 			_panel = panel;
 			_camImgNew = null;
 			_changed = false;
+			_rightPanel = rightPanel;
+			_detected = false;
 		}
 		
 		public void run(){
@@ -165,17 +154,19 @@ public class LeftPanelGUI extends JPanel implements Observer{
 					if(_changed){
 						System.out.println("On sleep ici");
 						try {
-							this.sleep(1000);
+							Thread.sleep(1000);
 							_changed = false;
-							_ffg.stop();
-							_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
-							_ffg.start();
-							this.sleep(1000);
+						//	_ffg.stop();
+						//	_ffg = new FFmpegFrameGrabber("tcp://192.168.1.1:5555"); 
+						//	_ffg.start();
+							_ffg.restart();
+							Thread.sleep(1000);
 							i=0;
 						} 
 						catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						System.out.println("On retourne recuperer la video");
 					}
 					
 					++i;
@@ -191,14 +182,29 @@ public class LeftPanelGUI extends JPanel implements Observer{
 							_ffg.restart();
 						}	
 					}
-					
+
 					_camImgNew = _ffg.grab().getBufferedImage();
-					
 					//toutes les 60 images (toutes les secondes), on calcule
 					if (i%40 == 0){
 						ImageOperation img = new ImageOperation();
 						if(img.detectRobot(_camImgNew)){
-							// TODO : essaie de connexion avec le robot
+							_rightPanel.setTakeControle(true);
+							_detected = true;
+							if(_detected)
+								_model.writeInFile("Robot detected ! ");
+						}
+						else{
+							if (_detected){
+								_detected = false;
+								_rightPanel.setTakeControle(false);
+								_robot.setControlRobot(false);
+								try {
+									HttpClientArduino.sendGet("Stop");
+								} 
+								catch (java.lang.Exception e) {
+									e.printStackTrace();
+								}
+							}
 						}
 					}
 					_panel.setSize(640,360);

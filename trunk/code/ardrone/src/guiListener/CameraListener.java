@@ -14,7 +14,6 @@ public class CameraListener implements MouseListener{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("[ChangeCameraListener] Button clicked");
 		_camModel.changeCamera();
 	}
 	public void mousePressed(MouseEvent e) {}

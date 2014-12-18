@@ -1,10 +1,14 @@
 package guiListener;
 
+import robot.HttpClientArduino;
 import guiModel.ConsoleModel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Observable;
+import java.util.Observer;
 
+import robot.RobotControll;
 import PartieANOUARetANAS.Controller;
 import PartieANOUARetANAS.DroneStateContext;
 
@@ -33,14 +37,26 @@ M : flip a droit
 */
 
 //for ar-drone
-public class KeyboardDrone implements KeyListener {
+public class KeyboardDrone implements KeyListener, Observer {
 
 	private DroneStateContext _context;
 	private ConsoleModel _model;
+	private RobotControll _robotControll;
+	private boolean _canControlRobot;
 	
-	public KeyboardDrone(Controller controller, ConsoleModel model) {
+	// Robot
+	private static final String FORWARD = "Forward";
+	private static final String LEFT = "Left";
+	private static final String RIGHT = "Right";
+	private static final String BACKWARD = "Backward";
+	private static final String STOP = "Stop";
+	
+	public KeyboardDrone(Controller controller, ConsoleModel model, RobotControll robotControll) {
 		_context = new DroneStateContext(controller, model);
 		_model = model;
+		_robotControll = robotControll;
+		_robotControll.addObserver(this);
+		_canControlRobot = false;
 	}
 
 	public void execute(int key){
@@ -160,12 +176,44 @@ public class KeyboardDrone implements KeyListener {
 			}
 			break;
 		}
+		
+		if(_canControlRobot){
+			try{
+				switch(key) {
+				case KeyEvent.VK_NUMPAD8:
+					HttpClientArduino.sendGet(FORWARD);
+					_model.writeInFile("Robot is going forward");
+					break;
+					
+				case KeyEvent.VK_NUMPAD4: 
+					HttpClientArduino.sendGet(LEFT);
+					_model.writeInFile("Robot is going left");
+					break;
+					
+				case KeyEvent.VK_NUMPAD6 :
+					HttpClientArduino.sendGet(RIGHT);
+					_model.writeInFile("Robot is going right");
+					break;
+					
+				case KeyEvent.VK_NUMPAD2 : 
+					HttpClientArduino.sendGet(BACKWARD);
+					_model.writeInFile("Robot is going backward");
+					break;
+	
+				case KeyEvent.VK_NUMPAD5:
+					HttpClientArduino.sendGet(STOP);
+					_model.writeInFile("Robot is now stopping");
+					break;
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -177,8 +225,12 @@ public class KeyboardDrone implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		_canControlRobot = _robotControll.getControlRobot();
+		System.out.println("[KeyboardDrone] Bouton cliqué !!!");
 	}
 
 }

@@ -1,11 +1,6 @@
 package image;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 
 public class ImageOperation extends Thread {
 	final static int RANGE_INF = 0;
@@ -61,17 +56,17 @@ public class ImageOperation extends Thread {
             		}
             		
             		if (!dif){
-            			System.out.println("Detected : ");
+            			//System.out.println("Detected : ");
             			System.out.println("Coordinates : "+x+";"+y);
             			chrono.stop();
-            			chrono.printMilliSec();
+            			//chrono.printMilliSec();
             			return true;
             		}
             	}
             }
         }
         
-        System.out.println("Non detected");
+       // System.out.println("Non detected");
         chrono.stop();
 		chrono.printMilliSec();
 	    
