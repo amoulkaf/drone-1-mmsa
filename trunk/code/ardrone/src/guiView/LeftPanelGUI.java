@@ -39,8 +39,13 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	private FFmpegFrameGrabber _ffg;
 	private Controller _controller;
 	private ShowImage _showImage;
+	private JPanel _north;
 	
 	public LeftPanelGUI(Controller controller){
+	//	_north = new JPanel();
+		//north.setSize(640,360);
+		//JPanel south = new JPanel();
+
 		_controller = controller;
 		_camModel = new CameraModel();
 		
@@ -89,13 +94,13 @@ public class LeftPanelGUI extends JPanel implements Observer{
 			catch (InterruptedException e) {				
 				e.printStackTrace();
 			}
-			_showImage = new ShowImage(this);
+			_showImage = new ShowImage(_north);
 			_showImage.start();
 			_camModel.addObserver(_showImage);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
+		/*
 		BufferedImage img=null;
 		try {
 			img = ImageIO.read(new File("../../doc/IHM/ihm.png"));
@@ -106,10 +111,15 @@ public class LeftPanelGUI extends JPanel implements Observer{
 		ImageIcon icon = new ImageIcon(img);
 		_camLabel = new JLabel(icon);
 		this.add(_camLabel, BorderLayout.NORTH);
-		
+		*/
 		JButton changeCameraButton = new JButton("Changer de camera");
 		changeCameraButton.setToolTipText("Changer la camera du drone");
 		changeCameraButton.addMouseListener(new CameraListener(_camModel));
+		_camLabel = new JLabel();
+		//_north.add(_camLabel);
+		//south.add(changeCameraButton);
+		
+		this.add(_camLabel,BorderLayout.NORTH);
 		this.add(changeCameraButton, BorderLayout.SOUTH);	
 		System.out.println("[LPGUI] Left Panel GUI ok ");
 	}
@@ -131,19 +141,18 @@ public class LeftPanelGUI extends JPanel implements Observer{
 	
 	@Override
 	public void paintComponent(Graphics g){
-		ImageIcon icon = new ImageIcon(_camImgNew);
-		_camLabel = new JLabel(icon);
-		this.remove(_camLabel);
-		this.add(_camLabel, BorderLayout.NORTH);
-		System.out.println("okookko k ok ok okok");
-		//g.drawImage(img,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
+		g.drawImage(_camImgNew,0,0,_camImgNew.getWidth(),_camImgNew.getHeight(),_camLabel);
+		_north.remove(_camLabel);
+		this.remove(_north);
+		_north.add(_camLabel);
+		this.add(_north, BorderLayout.NORTH);
 	}
 	
 	class ShowImage extends Thread implements Observer{
-		private LeftPanelGUI _panel;
+		private JPanel _panel;
 		private boolean _changed;
 		
-		public ShowImage(LeftPanelGUI panel){
+		public ShowImage(JPanel panel){
 			_panel = panel;
 			_camImgNew = null;
 			_changed = false;
