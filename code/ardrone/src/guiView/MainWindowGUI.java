@@ -1,13 +1,14 @@
 package guiView;
 
 import guiListener.KeyboardDrone;
+import guiModel.CameraModel;
 import guiModel.ConsoleModel;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import robot.RobotControll;
 import PartieANOUARetANAS.Controller;
 
 public class MainWindowGUI extends JFrame{
@@ -16,15 +17,17 @@ public class MainWindowGUI extends JFrame{
 	private static final String TITLE = "Sauveteur drone"; 
 	//private TextField display;
 	
-	public MainWindowGUI(KeyboardDrone k,ConsoleModel model, Controller controller){
+	public MainWindowGUI(KeyboardDrone k,ConsoleModel model, Controller controller, RobotControll robot){
 		this.setTitle(TITLE);
 		this.setSize(WIDTH,HEIGHT);
 		this.setLocationRelativeTo(null);
-		this.setSize(1000,600);
+		this.setSize(1000,400);
 
 		this.setLayout(new BorderLayout());
-		LeftPanelGUI leftPanel = new LeftPanelGUI(controller);
-		RightPanelGUI rightPanel = new RightPanelGUI(k,model);
+		
+		CameraModel camModel = new CameraModel();
+		RightPanelGUI rightPanel = new RightPanelGUI(k,model, camModel, robot);
+		LeftPanelGUI leftPanel = new LeftPanelGUI(controller, camModel, rightPanel, robot, model);
 		
 		this.add(leftPanel, BorderLayout.WEST);
 		this.add(rightPanel, BorderLayout.EAST);

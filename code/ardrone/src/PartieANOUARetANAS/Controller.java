@@ -90,8 +90,5 @@ public class Controller {
 		Thread.sleep(250);
 		sendMessage(Commands.check(_connection.getSeq()));
 		_consoleModel.writeInFile("[OK] UAV is now initialized.");
-		
-		
-		System.out.println("Dodo terminé, on envoie la sauce !");
 	}
 }

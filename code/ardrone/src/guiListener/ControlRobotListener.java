@@ -3,11 +3,17 @@ package guiListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class ControlRobotListener implements MouseListener{
+import robot.RobotControll;
 
+public class ControlRobotListener implements MouseListener{
+	private RobotControll _robot;
+	
+	public ControlRobotListener(RobotControll robot){
+		_robot = robot;
+	}
+	
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("[ControlRobotListener] Mouse clicked");
-		//envoyer ici la demande de co au robot
+		_robot.setControlRobot(true);
 	}
 	
 	public void mousePressed(MouseEvent e) {}
