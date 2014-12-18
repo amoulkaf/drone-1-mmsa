@@ -1,4 +1,3 @@
-
 #include <WiFly.h>
 #include <SPI.h>
 #include <Servo.h>
@@ -11,10 +10,6 @@ Servo servoRight;
 
 WiFlyServer server(8080);
 
-char ssid[] = "Arduino1";
-char *ip = "192.168.0.1";
-char *netMask = "255.255.255.0";
-int test;
 
 void setup() {
   Serial.begin(9600);
@@ -25,28 +20,27 @@ void setup() {
   Serial.println("**************Starting WiFly**************");
   // Enable Adhoc mod
   WiFly.begin(true);
-  Serial.println("WiFly started, creating network.");
-
-  if (!WiFly.createAdHocNetwork("ardrone1")) 
+  Serial.println("Client Arduino");
+  
+  if (WiFly.joinAdHocNetwork("ARDRONE","192.168.1.50","255.255.255.0")){
+    Serial.println("Association established");
+  }
+  else 
   {
-    Serial.print("Failed to create ad hoc network.");
-    while (1) 
-    {
+    Serial.println("Association failed.");
+    while (1) {
       // Hang on failure.
     }
   }
-  // Set IP & NetMask for Adhoc Network
-  WiFly.SetNetwork(ip, netMask);
 
-  Serial.println("Network created");
-  Serial.print("IP: ");
-  Serial.println(WiFly.ip());
+  Serial.println("Connecting to the ad-hoc network...");
+
+  /* ----------------------------------------------------------- */
+
 
   Serial.println("Starting Server...");
   server.begin();
   Serial.println("Server started, waiting for client.");
-  /* ----------------------------------------------------------- */
-
 
 
   /* ----------------------------------------------------------- */
@@ -60,7 +54,7 @@ void setup() {
 }
 
 void loop()  {
-
+ 
   
   /* ----------------------------------------------------------- */
   /* -Handle HTTP Request when a client is connected for remote control -
@@ -111,16 +105,11 @@ void loop()  {
         }
       }
     }
-    
-    /* -------------------------------------------- */
-    // -give the web browser time to receive the data
-    /* -------------------------------------------- */
-    
     delay(100);//delay is very important
     Serial.println("test");
     client.flush();
-    client.stop();
-    }
+    client.stop(); 
+  }
 }  
 
 

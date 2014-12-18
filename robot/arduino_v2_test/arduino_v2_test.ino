@@ -11,7 +11,7 @@ Servo servoRight;
 
 WiFlyServer server(8080);
 
-char ssid[] = "ardrone_1";
+char ssid[] = "ardrone_2";
 char *ip = "192.168.1.3";
 char *netMask = "255.255.255.0";
 int test;
@@ -26,18 +26,17 @@ void setup() {
   // Enable Hotspot mod
   WiFly.begin();
   Serial.println("WiFly started, creating network.");
-  Serial.println("Kappa");
+
   if (!WiFly.join(ssid)) 
   {
-    Serial.println("Keepo");
+ 
     Serial.print("Failed to join ardrone network.");
     while (1) 
     {
-      Serial.println("Keepo");
       // Hang on failure.
     }
   }
-  Serial.println("appaK");
+
   // Set IP & NetMask for Adhoc Network
   //WiFly.SetNetwork(ip, netMask);
 

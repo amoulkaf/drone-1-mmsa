@@ -766,7 +766,7 @@ boolean WiFlyDevice::joinAdHocNetwork(const char *ssid, char *ipAddr, char *netM
   sendCommand(ssid);
 
   // Set scan channel for Adhoc Network connection
-  sendCommand(F("set wlan chan 0"));
+  sendCommand(F("set wlan chan 6"));
 
   // Set IP for Adhoc Network
   SetNetwork(ipAddr, netMask);
