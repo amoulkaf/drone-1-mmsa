@@ -44,14 +44,14 @@ public class ImageOperation extends Thread {
             			for (int j=y; j<=y+h_area;j++){
             				int[] rgb1 = getPixelData(_image, i, j);
             				r1 = rgb1[0];
-        	            	g1 = rgb1[1];
-        	            	b1 = rgb1[2];
-        	            	for (int s = RANGE_INF; s<=RANGE_SUP; s++){
-	            				if (r1 != r || g1 != g || b1 != b){
-	            					dif = true;
-	            					break;
-	            				}
-        	            	}
+					g1 = rgb1[1];
+					b1 = rgb1[2];
+					for (int s = RANGE_INF; s<=RANGE_SUP; s++){
+							if (r1 != r || g1 != g || b1 != b){
+								dif = true;
+								break;
+							}
+					}
             			}
             		}
             		
